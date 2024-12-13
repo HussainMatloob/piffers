@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class Utils {
   // final ImagePicker _picker = ImagePicker();
   // Use MediaQuery to get screen width and height
-
 
   Widget buildSlideContent(BuildContext context, Map<String, String> slide) {
     // Access screen width and height using MediaQuery
@@ -16,53 +14,59 @@ class Utils {
 
     return Padding(
       padding: EdgeInsets.only(
-        left: screenWidth * 0.1,  // 10% of the screen width
-        right: screenWidth * 0.1,  // 10% of the screen width
-        top: screenHeight * 0.1,   // 10% of the screen height
+        left: screenWidth * 0.1, // 10% of the screen width
+        right: screenWidth * 0.1, // 10% of the screen width
+        top: screenHeight * 0.1, // 10% of the screen height
       ),
       child: Card(
-        margin: EdgeInsets.only(bottom: screenHeight * 0.2),  // 20% of the screen height
+        margin: EdgeInsets.only(bottom: screenHeight * 0.05),
+        // 20% of the screen height
         color: Colors.white,
         elevation: 8.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              slide['image']!,
-              fit: BoxFit.fill,
-              height: screenHeight * 0.35,  // 35% of the screen height for the image
-            ),
-            const SizedBox(height: 20.0),
-            Text(
-              slide['title']!,
-              style: GoogleFonts.nunitoSans(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                slide['image']!,
+                fit: BoxFit.fill,
+                height: screenHeight *
+                    0.35, // 35% of the screen height for the image
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10.0),
-            Padding(
-              padding: EdgeInsets.all(screenWidth * 0.07),  // 7% of the screen width for padding
-              child: Text(
-                slide['description']!,
-                textAlign: TextAlign.center,
+              const SizedBox(height: 20.0),
+              Text(
+                slide['title']!,
                 style: GoogleFonts.nunitoSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: EdgeInsets.all(screenWidth * 0.07),
+                // 7% of the screen width for padding
+                child: Text(
+                  slide['description']!,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.nunitoSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
   Widget buildTextField(String label, TextEditingController controller,
       [TextInputType? inputType, bool obscureText = false]) {
     return Padding(
@@ -73,11 +77,9 @@ class Utils {
           Text(
             label,
             style: GoogleFonts.nunitoSans(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black
-              // Line-height equivalent (lineHeight / fontSize)
-            ),
+                fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black
+                // Line-height equivalent (lineHeight / fontSize)
+                ),
           ),
           SizedBox(height: 5),
           TextFormField(
@@ -86,7 +88,7 @@ class Utils {
             obscureText: obscureText,
             decoration: InputDecoration(
               contentPadding:
-              EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15), // Circular radius
               ),
@@ -112,13 +114,15 @@ class Utils {
         controller: controller,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15), // Circular border
           ),
           filled: true,
           fillColor: Colors.white,
-          hintText: 'Search...', // Placeholder text
+          hintText: 'Search...',
+          // Placeholder text
           hintStyle: GoogleFonts.nunitoSans(
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -140,7 +144,6 @@ class Utils {
       ),
     );
   }
-
 
   Widget SocialMediaIcons(String image) {
     return Container(
@@ -182,7 +185,6 @@ class Utils {
       ),
     );
   }
-
 
   Widget RoundedButton({
     required String text,
@@ -236,17 +238,16 @@ class Utils {
     );
   }
 
-  Widget buildCategoryItem( String imagePath) {
+  Widget buildCategoryItem(String imagePath) {
     return Column(
       children: [
         Container(
           child: Center(
-            child: Image.asset(
-             imagePath, // Path to your SVG file
-              width: 80.0,
-              height: 80.0,
-            )
-          ),
+              child: Image.asset(
+            imagePath, // Path to your SVG file
+            width: 80.0,
+            height: 80.0,
+          )),
         ),
       ],
     );

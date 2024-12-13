@@ -110,27 +110,30 @@ class _LoginState extends State<Login> {
 
                 const SizedBox(height: 30),
 
-                const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      height: 1,
-                      child: ColoredBox(color: Colors.grey),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          "OR",
-                          style: TextStyle(fontSize: 18),
-                        )),
-                    SizedBox(
-                      width: 150,
-                      height: 1,
-                      child: ColoredBox(color: Colors.grey),
-                    )
-                  ],
+                const Padding(
+                  padding:EdgeInsets.only(left: 10,right: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        height: 1,
+                        child: ColoredBox(color: Colors.grey),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Text(
+                            "OR",
+                            style: TextStyle(fontSize: 18),
+                          )),
+                      SizedBox(
+                        width: 120,
+                        height: 1,
+                        child: ColoredBox(color: Colors.grey),
+                      )
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 15),

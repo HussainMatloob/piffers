@@ -12,7 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:piffers/Views/controllers/pdfcontroller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class LocateResponder extends StatefulWidget {
   @override
   _LocateResponderState createState() => _LocateResponderState();
@@ -22,7 +21,8 @@ class _LocateResponderState extends State<LocateResponder> {
   // Track the selected index for bottom navigation
   final AuthController authController = Get.put(AuthController());
   final UIController uiController = Get.put(UIController());
-  final PdfController pdfController = Get.put(PdfController());  // Create an instance of PdfController
+  final PdfController pdfController =
+      Get.put(PdfController()); // Create an instance of PdfController
 
   String _fullName = "";
 
@@ -53,7 +53,6 @@ class _LocateResponderState extends State<LocateResponder> {
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -366,194 +365,223 @@ class _LocateResponderState extends State<LocateResponder> {
                           bottom: Radius.circular(30),
                           top: Radius.circular(30)),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          icon: Image.asset(
-                            'assets/png/responder.png',
-                            color: Colors.black, // Path to your SVG file
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: Image.asset(
+                              'assets/png/responder.png',
+                              color: Colors.black, // Path to your SVG file
+                            ),
+                            iconSize: 50.0,
+                            onPressed: () {
+                              Get.to(ResponderListScreen());
+                            },
                           ),
-                          iconSize: 50.0,
-                          onPressed: () {
-                            Get.to(ResponderListScreen());
-                          },
-                        ),
-                        // Second Image Icon Button
-                        IconButton(
-                          icon: Image.asset('assets/png/logo1.png'),
-                          iconSize: 120.0,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                final List<Map<String, String>> pdfFiles = [
-                                  {
-                                    'name': 'TrainingHandBook',
-                                    'path': 'assets/pdf/TrainingHandBook.pdf',
-                                  },
-                                  {
-                                    'name': 'EscortServices',
-                                    'path': 'assets/pdf/EscortServices.pdf',
-                                  },
-                                  {
-                                    'name': 'MPRRScoreCard',
-                                    'path': 'assets/pdf/MPRRScoreCard.pdf',
-                                  },
-                                  {
-                                    'name': 'QRFBrochure',
-                                    'path': 'assets/pdf/QRFBrochure.pdf',
-                                  },
-                                  {
-                                    'name': 'PIFFERSHiring&ScreeningFile',
-                                    'path':
-                                        'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
-                                  },
-                                  {
-                                    'name': 'PIFFERSSecurityServices',
-                                    'path':
-                                        'assets/pdf/PIFFERSSecurityServices.pdf',
-                                  },
-                                  {
-                                    'name': 'PIFFERSSecurityUniformGallery',
-                                    'path':
-                                        'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
-                                  },
-                                  {
-                                    'name': 'PIFFERSSecurityWeaponGallery',
-                                    'path':
-                                        'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
-                                  },
-                                  {
-                                    'name': 'PsychotherapyProgressReport',
-                                    'path':
-                                        'assets/pdf/PsychotherapyProgressReport.pdf',
-                                  },
-                                ];
+                          // Second Image Icon Button
+                          IconButton(
+                            icon: Image.asset('assets/png/logo1.png'),
+                            iconSize: 100,
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  final List<Map<String, String>> pdfFiles = [
+                                    {
+                                      'name': 'TrainingHandBook',
+                                      'path': 'assets/pdf/TrainingHandBook.pdf',
+                                    },
+                                    {
+                                      'name': 'EscortServices',
+                                      'path': 'assets/pdf/EscortServices.pdf',
+                                    },
+                                    {
+                                      'name': 'MPRRScoreCard',
+                                      'path': 'assets/pdf/MPRRScoreCard.pdf',
+                                    },
+                                    {
+                                      'name': 'QRFBrochure',
+                                      'path': 'assets/pdf/QRFBrochure.pdf',
+                                    },
+                                    {
+                                      'name': 'PIFFERSHiring&ScreeningFile',
+                                      'path':
+                                          'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
+                                    },
+                                    {
+                                      'name': 'PIFFERSSecurityServices',
+                                      'path':
+                                          'assets/pdf/PIFFERSSecurityServices.pdf',
+                                    },
+                                    {
+                                      'name': 'PIFFERSSecurityUniformGallery',
+                                      'path':
+                                          'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
+                                    },
+                                    {
+                                      'name': 'PIFFERSSecurityWeaponGallery',
+                                      'path':
+                                          'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
+                                    },
+                                    {
+                                      'name': 'PsychotherapyProgressReport',
+                                      'path':
+                                          'assets/pdf/PsychotherapyProgressReport.pdf',
+                                    },
+                                  ];
 
-                                return ListView.builder(
-                                  itemCount: pdfFiles.length,
-                                  itemBuilder: (context, index) {
-                                    final pdf = pdfFiles[index];
+                                  return ListView.builder(
+                                    itemCount: pdfFiles.length,
+                                    itemBuilder: (context, index) {
+                                      final pdf = pdfFiles[index];
 
-                                    return Obx(() {
-                                      // Get the selected PDF path from GetX
-                                      final selectedPdfPath = pdfController.selectedPdfPath.value;
+                                      return Obx(() {
+                                        // Get the selected PDF path from GetX
+                                        final selectedPdfPath =
+                                            pdfController.selectedPdfPath.value;
 
-                                      return Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                                        width: MediaQuery.of(context).size.width,  // Set width based on screen size
-                                        child: Card(
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: ListTile(
-                                            leading: const Icon(Icons.picture_as_pdf, color: Colors.blue),  // Leading PDF icon
-                                            title: Text(pdf['name']!),
-                                            trailing: IconButton(
-                                              icon: Icon(
-                                                // Check if this PDF is selected
-                                                    Icons.visibility,
-
-                                                color: selectedPdfPath == pdf['path'] ? Colors.blue : Colors.grey,
-                                              ),
-                                              onPressed: () {
-                                                // Toggle selection using GetX controller
-                                                pdfController.togglePdfSelection(pdf['path']!);
-                                                Get.to( PdfViewerScreen(pdfPath: pdf['path']!));
-                                              },
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 15),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          // Set width based on screen size
+                                          child: Card(
+                                            elevation: 5,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
+                                            child: ListTile(
+                                              leading: const Icon(
+                                                  Icons.picture_as_pdf,
+                                                  color: Colors.blue),
+                                              // Leading PDF icon
+                                              title: Text(pdf['name']!),
+                                              trailing: IconButton(
+                                                icon: Icon(
+                                                  // Check if this PDF is selected
+                                                  Icons.visibility,
 
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-
-                        // Third Image Icon Button
-                        IconButton(
-                          icon: Image.asset('assets/png/logo2.png'),
-                          iconSize: 120.0,
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                final List<Map<String, String>> pdfFiles = [
-                                  {
-                                    'name': 'PIFFERSSedulous',
-                                    'path': 'assets/pdf/PIFFERSSedulous.pdf'
-                                  },
-                                  {
-                                    'name': 'SedulousProfile',
-                                    'path': 'assets/pdf/SedulousProfile.pdf'
-                                  },
-                                  {
-                                    'name': 'TrainingHandBook',
-                                    'path': 'assets/pdf/TrainingHandBook.pdf'
-                                  },
-                                ];
-
-                                return ListView.builder(
-                                  itemCount: pdfFiles.length,
-                                  itemBuilder: (context, index) {
-                                    final pdf = pdfFiles[index];
-
-                                    return Obx(() {
-                                      // Get the selected PDF path from GetX
-                                      final selectedPdfPath = pdfController.selectedPdfPath.value;
-
-                                      return Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                                        width: MediaQuery.of(context).size.width,  // Set width based on screen size
-                                        child: Card(
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: ListTile(
-                                            leading: const Icon(Icons.picture_as_pdf, color: Colors.blue),  // Leading PDF icon
-                                            title: Text(pdf['name']!),
-                                            trailing: IconButton(
-                                              icon: Icon(
-                                                // Check if this PDF is selected
-                                                Icons.visibility,
-
-                                                color: selectedPdfPath == pdf['path'] ? Colors.blue : Colors.grey,
+                                                  color: selectedPdfPath ==
+                                                          pdf['path']
+                                                      ? Colors.blue
+                                                      : Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Toggle selection using GetX controller
+                                                  pdfController
+                                                      .togglePdfSelection(
+                                                          pdf['path']!);
+                                                  Get.to(PdfViewerScreen(
+                                                      pdfPath: pdf['path']!));
+                                                },
                                               ),
-                                              onPressed: () {
-                                                // Toggle selection using GetX controller
-                                                pdfController.togglePdfSelection(pdf['path']!);
-                                                Get.to( PdfViewerScreen(pdfPath: pdf['path']!));
-                                              },
                                             ),
-
                                           ),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        // Fourth Image Icon Button
-                        IconButton(
-                          icon: SvgPicture.asset(
-                            'assets/svg/more.svg', // Path to your SVG file
+                                        );
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          iconSize: 50.0,
-                          onPressed: () {
-                            Get.to(MoreScreen());
-                          },
-                        ),
-                      ],
+
+                          // Third Image Icon Button
+                          IconButton(
+                            icon: Image.asset('assets/png/logo2.png'),
+                            iconSize: 100,
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  final List<Map<String, String>> pdfFiles = [
+                                    {
+                                      'name': 'PIFFERSSedulous',
+                                      'path': 'assets/pdf/PIFFERSSedulous.pdf'
+                                    },
+                                    {
+                                      'name': 'SedulousProfile',
+                                      'path': 'assets/pdf/SedulousProfile.pdf'
+                                    },
+                                    {
+                                      'name': 'TrainingHandBook',
+                                      'path': 'assets/pdf/TrainingHandBook.pdf'
+                                    },
+                                  ];
+
+                                  return ListView.builder(
+                                    itemCount: pdfFiles.length,
+                                    itemBuilder: (context, index) {
+                                      final pdf = pdfFiles[index];
+
+                                      return Obx(() {
+                                        // Get the selected PDF path from GetX
+                                        final selectedPdfPath =
+                                            pdfController.selectedPdfPath.value;
+
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 15),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          // Set width based on screen size
+                                          child: Card(
+                                            elevation: 5,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: ListTile(
+                                              leading: const Icon(
+                                                  Icons.picture_as_pdf,
+                                                  color: Colors.blue),
+                                              // Leading PDF icon
+                                              title: Text(pdf['name']!),
+                                              trailing: IconButton(
+                                                icon: Icon(
+                                                  // Check if this PDF is selected
+                                                  Icons.visibility,
+
+                                                  color: selectedPdfPath ==
+                                                          pdf['path']
+                                                      ? Colors.blue
+                                                      : Colors.grey,
+                                                ),
+                                                onPressed: () {
+                                                  // Toggle selection using GetX controller
+                                                  pdfController
+                                                      .togglePdfSelection(
+                                                          pdf['path']!);
+                                                  Get.to(PdfViewerScreen(
+                                                      pdfPath: pdf['path']!));
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          // Fourth Image Icon Button
+                          IconButton(
+                            icon: SvgPicture.asset(
+                              'assets/svg/more.svg', // Path to your SVG file
+                            ),
+                            iconSize: 50.0,
+                            onPressed: () {
+                              Get.to(MoreScreen());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -564,80 +592,78 @@ class _LocateResponderState extends State<LocateResponder> {
                     // Center the widgets by default
                     children: [
                       // HELP Button in the center
+
                       Positioned(
-                        right: 100,
-                        bottom: 150,
+                        top: MediaQuery.of(context).size.height * 0.12,
                         child: InkWell(
                           onTap: () {
                             Get.dialog(CountdownDialog());
                           },
                           child: SvgPicture.asset(
-                            'assets/svg/helpB.svg', // Path to your SVG file
-                            width: 180,
-                            height: 180,
-                          ),
+                              'assets/svg/helpB.svg', // Path to your SVG file
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              // Adjust width relative to screen size
+                              height: MediaQuery.of(context).size.height *
+                                  0.2 // Adjust height relative to screen size
+                              ),
                         ),
                       ),
 
                       // KEEP AN EYE Button (top-right relative to the center)
                       Positioned(
-                        right: 10,
-                        top: 10,
-                        width: 100,
-                        height: 100,
+                        right: MediaQuery.of(context).size.width *
+                            0.05, // Adjust right margin
+                        top: MediaQuery.of(context).size.height *
+                            0.01, // Adjust top margin
                         child: InkWell(
-                          onTap: openGoogleMaps, // Trigger the map view implementation
+                          onTap: openGoogleMaps,
+                          // Trigger the map view implementation
                           child: SvgPicture.asset(
                             'assets/svg/kEye.svg', // Path to your SVG file
                             fit: BoxFit.contain,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            // Adjust width relative to screen size
+                            height: MediaQuery.of(context).size.height *
+                                0.08, // Adjust height relative to screen size
                           ),
                         ),
                       ),
+
                       // Self Response (left of the center)
-                      Obx(() {
-                        double xPos = screenWidth * uiController.selfResponderPosition.value.dx;
-                        double yPos = screenHeight * uiController.selfResponderPosition.value.dy;
-                        return Positioned(
-                          left: xPos,
-                          top: yPos,
-                          child: Column(
-                            children: [
-                              Utils().buildCategoryItem("assets/png/selfR.png"),
-                            ],
-                          ),
-                        );
-                      }),
+
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.02,
+                        left: MediaQuery.of(context).size.height * 0.07,
+                        child: Column(
+                          children: [
+                            Utils().buildCategoryItem("assets/png/selfR.png"),
+                          ],
+                        ),
+                      ),
 
                       // Add Responder (bottom-left relative to the center)
-                      Obx(() {
-                        double xPos = screenWidth * uiController.addResponderPosition.value.dx;
-                        double yPos = screenHeight * uiController.addResponderPosition.value.dy;
-                        return Positioned(
-                          left: xPos,
-                          bottom: yPos,
-                          child: Column(
-                            children: [
-                              Utils().buildCategoryItem("assets/png/Croom.png"),
-                            ],
-                          ),
-                        );
-                      }),
+
+                      Positioned(
+                        left: MediaQuery.of(context).size.height * 0.02,
+                        bottom: MediaQuery.of(context).size.height * 0.16,
+                        child: Column(
+                          children: [
+                            Utils().buildCategoryItem("assets/png/Croom.png"),
+                          ],
+                        ),
+                      ),
 
                       // More (bottom-right relative to the center)
-                      Obx(() {
-                        double xPos = screenWidth * uiController.morePosition.value.dx;
-                        double yPos = screenHeight * uiController.morePosition.value.dy;
-                        return Positioned(
-                          left: xPos,
-                          bottom: yPos,
-                          child: Column(
-                            children: [
-                              Utils().buildCategoryItem("assets/png/Bike.png"),
-                            ],
-                          ),
-                        );
-                      }),
 
+                      Positioned(
+                        left: MediaQuery.of(context).size.height * 0.06,
+                        bottom: MediaQuery.of(context).size.height * 0.02,
+                        child: Column(
+                          children: [
+                            Utils().buildCategoryItem("assets/png/Bike.png"),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -652,10 +678,12 @@ class _LocateResponderState extends State<LocateResponder> {
   Future<void> _logoutUser() async {
     authController.logout();
   }
+
   Future<void> openGoogleMaps() async {
     const String lat = "33.6844"; // Latitude for Islamabad
     const String lng = "73.0479"; // Longitude for Islamabad
-    final Uri googleMapsUrl = Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+    final Uri googleMapsUrl =
+        Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
     if (await canLaunchUrl(googleMapsUrl)) {
       await launchUrl(googleMapsUrl);
     } else {
