@@ -633,7 +633,7 @@ class _LocateResponderState extends State<LocateResponder> {
 
                       Positioned(
                         top: MediaQuery.of(context).size.height * 0.02,
-                        left: MediaQuery.of(context).size.height * 0.07,
+                        left: MediaQuery.of(context).size.width * 0.2,
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/selfR.png"),
@@ -644,8 +644,8 @@ class _LocateResponderState extends State<LocateResponder> {
                       // Add Responder (bottom-left relative to the center)
 
                       Positioned(
-                        left: MediaQuery.of(context).size.height * 0.02,
-                        bottom: MediaQuery.of(context).size.height * 0.16,
+                        left: MediaQuery.of(context).size.width * 0.05,
+                        bottom: MediaQuery.of(context).size.height * 0.26,
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/Croom.png"),
@@ -656,8 +656,8 @@ class _LocateResponderState extends State<LocateResponder> {
                       // More (bottom-right relative to the center)
 
                       Positioned(
-                        left: MediaQuery.of(context).size.height * 0.06,
-                        bottom: MediaQuery.of(context).size.height * 0.02,
+                        left: MediaQuery.of(context).size.width * 0.15,
+                        bottom: MediaQuery.of(context).size.height * 0.12,
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/Bike.png"),
