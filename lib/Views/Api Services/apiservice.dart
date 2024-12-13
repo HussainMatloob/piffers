@@ -1,0 +1,202 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:piffers/Views/Utils/utils.dart';
+import 'package:http_parser/http_parser.dart'; // <-- This is required for MediaType
+import 'package:get/get.dart';
+
+class ApiService {
+  static const String baseUrl = "https://sos.piffers.net/public";
+
+  // Register API
+  static Future<Map<String, dynamic>> registerUser(
+      Map<String, dynamic> data) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+    return _processResponse(response);
+  }
+
+  // Login API
+  static Future<Map<String, dynamic>> loginUser(
+      Map<String, dynamic> data) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+    return _processResponse(response);
+  }
+
+  // Logout API
+  static Future<void> logoutUser(String token) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/logout'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode != 200) {
+      throw Exception("Failed to log out");
+    }
+  }
+// Send OTP API
+  static Future<void> sendOtp(String email) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/password-reset-otp'),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({'email': email}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to send OTP. Please try again.");
+    }
+  }
+
+  // Reset Password API
+  static Future<void> resetPassword(
+      String email,
+      String otp,
+      String password,
+      String confirmPassword,
+      ) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/reset-password'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'email': email,
+        'otp': otp,
+        'password': password,
+        'password_confirmation': confirmPassword,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to reset password. Please try again.");
+    }
+  }
+  // Forgot Password API
+  static Future<void> sendResetPasswordEmail(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/password-reset-otp'),
+        body: jsonEncode({'email': email}),
+      );
+      print(" +++++++++++++++++++ ${email.toString()}");
+      print(" +++++++++++++++++++ ${response.body}");
+      if (response.statusCode != 200) {
+        throw Exception("Failed to send reset password email");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // // Reset Password API
+  // static Future<void> resetPassword(
+  //     String token, Map<String, dynamic> data) async {
+  //   final response = await http.post(
+  //     Uri.parse('$baseUrl/api/reset-password'),
+  //     headers: {'Accept': 'application/json'},
+  //     body: jsonEncode(data),
+  //   );
+  //   if (response.statusCode != 200) {
+  //     throw Exception("Failed to reset password");
+  //   }
+  // }
+
+  // Add responder API
+  static Future<void> addResponder({
+    required String name,
+    required String fatherName,
+    required String relation,
+    required String cnic,
+    required String email,
+    required String phone,
+    required String address,
+    required File responderImage,
+  }) async {
+    String? token = await Utils.getString('token'); // Fetch the token
+    final uri = Uri.parse('$baseUrl/api/store-responders');
+
+    // Create multipart request
+    var request = http.MultipartRequest('POST', uri);
+
+    // Add headers
+    request.headers.addAll({
+      'Authorization': 'Bearer $token', // Authorization header
+      'Accept': 'application/json', // Accept JSON response
+    });
+
+    // Add fields to the request
+    request.fields['name'] = name;
+    request.fields['father_name'] = fatherName;
+    request.fields['relation'] = relation;
+    request.fields['cnic'] = cnic;
+    request.fields['email'] = email;
+    request.fields['phone'] = phone;
+    request.fields['address'] = address;
+
+    // Attach image as a file field
+    if (responderImage.existsSync()) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'responder_image', // Field name expected by the server
+        responderImage.path,
+      ));
+    } else {
+      throw Exception(
+          "Image file does not exist at path: ${responderImage.path}");
+    }
+
+    // Send the request
+    final response = await request.send();
+
+    // Handle the response
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final responseData = await response.stream.bytesToString();
+      print('Responder added successfully');
+      print('Response: $responseData');
+    } else {
+      final responseData = await response.stream.bytesToString();
+      print('Failed to add responder. Status code: ${response.statusCode}');
+      print('Response: $responseData');
+      throw Exception("Failed to add responder: $responseData");
+    }
+  }
+
+  static Future<List<dynamic>> getResponders(String token) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/responders'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Decode the response body to a list of responders
+      final List<dynamic> data = json.decode(response.body);
+      return data;  // Return the list
+    } else {
+      throw Exception('Failed to load responders');
+    }
+  }
+
+
+  // Private helper to process responses
+  static Map<String, dynamic> _processResponse(http.Response response) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Error: ${response.body}");
+    }
+  }
+}
