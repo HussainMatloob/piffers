@@ -63,7 +63,7 @@ class _LocateResponderState extends State<LocateResponder> {
               child: Text(
             "HOME",
             style: GoogleFonts.inknutAntiqua(
-              fontSize: 26,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           )),
@@ -305,7 +305,7 @@ class _LocateResponderState extends State<LocateResponder> {
               children: [
                 Container(
                   height: 130,
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
