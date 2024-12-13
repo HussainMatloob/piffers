@@ -2,16 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class Utils {
   // final ImagePicker _picker = ImagePicker();
+  // Use MediaQuery to get screen width and height
 
-  Widget buildSlideContent(Map<String, String> slide) {
+
+  Widget buildSlideContent(BuildContext context, Map<String, String> slide) {
+    // Access screen width and height using MediaQuery
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
-      padding: const EdgeInsets.only(left: 45.0, right: 45.0, top: 70),
+      padding: EdgeInsets.only(
+        left: screenWidth * 0.1,  // 10% of the screen width
+        right: screenWidth * 0.1,  // 10% of the screen width
+        top: screenHeight * 0.1,   // 10% of the screen height
+      ),
       child: Card(
-        margin: EdgeInsets.only(bottom: 130),
+        margin: EdgeInsets.only(bottom: screenHeight * 0.2),  // 20% of the screen height
         color: Colors.white,
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -23,30 +33,28 @@ class Utils {
             Image.asset(
               slide['image']!,
               fit: BoxFit.fill,
-              height: 350.0,
+              height: screenHeight * 0.35,  // 35% of the screen height for the image
             ),
             const SizedBox(height: 20.0),
             Text(
               slide['title']!,
               style: GoogleFonts.nunitoSans(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black
-                // Line-height equivalent (lineHeight / fontSize)
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10.0),
             Padding(
-              padding: EdgeInsets.all(25),
+              padding: EdgeInsets.all(screenWidth * 0.07),  // 7% of the screen width for padding
               child: Text(
                 slide['description']!,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black
-                  // Line-height equivalent (lineHeight / fontSize)
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -55,7 +63,6 @@ class Utils {
       ),
     );
   }
-
   Widget buildTextField(String label, TextEditingController controller,
       [TextInputType? inputType, bool obscureText = false]) {
     return Padding(

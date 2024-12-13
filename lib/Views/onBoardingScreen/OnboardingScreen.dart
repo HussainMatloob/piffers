@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return Utils().buildSlideContent(slides[index]);
+                  return Utils().buildSlideContent(context,slides[index] );
                 },
               ),
             ),
@@ -127,46 +127,4 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  // Widget to build slide content
-  // Widget _buildSlideContent(Map<String, String> slide) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(left: 45.0,right: 45.0,top: 70),
-  //     child: Card(
-  //       margin: EdgeInsets.only(bottom: 130),
-  //       color: Colors.white,
-  //       elevation: 8.0,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(30.0),
-  //       ),
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: [
-  //           Image.asset(
-  //             slide['image']!,
-  //             fit: BoxFit.fill,
-  //             height: 350.0,
-  //           ),
-  //           const SizedBox(height: 20.0),
-  //           Text(
-  //             slide['title']!,
-  //             style: const TextStyle(
-  //               fontSize: 24.0,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //             textAlign: TextAlign.center,
-  //           ),
-  //           const SizedBox(height: 10.0),
-  //           Padding(
-  //             padding: EdgeInsets.all(25),
-  //             child: Text(
-  //               slide['description']!,
-  //               textAlign: TextAlign.center,
-  //               style: const TextStyle(fontSize: 16.0, color: Colors.black),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

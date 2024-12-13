@@ -4,28 +4,39 @@ import 'package:piffers/Views/Utils/utils.dart';
 import 'authcontroller.dart';
 
 class ResponderController extends GetxController {
-  List<dynamic> responders = []; // Plain list without RxList
+  List<dynamic> responders = [];
   bool isLoading = true;
 
   Future<void> fetchResponders() async {
     try {
-      // Set loading state to true
+      print("Fetching responders..."); // Debug log
       isLoading = true;
+      update(); // Notify the UI to show the loader
 
-      // Fetch responders from the API
-      String? token = await Utils.getString('token'); // Get token
-      final data = await ApiService.getResponders(token!);
+      String? token = await Utils.getString('token'); // Ensure token is valid
+      if (token == null) {
+        print("Error: Token is null"); // Debug log
+        throw Exception("Token not found");
+      }
 
-      // Assuming 'data' is a List of responders, update the list
-      responders = data; // No need for RxList, just a normal List
+      // API Call
+      final data = await ApiService.getResponders(token);
+      print("API Response: $data"); // Debug log
 
-      // Set loading state to false after data is fetched
-      isLoading = false;
-      update(); // Update UI (you can also use setState in the widget)
+      // Check if data is a list and contains responders
+      if (data is List) {
+        responders = data;
+        print("Responders fetched: ${responders.length}"); // Debug log
+      } else {
+        print("Unexpected data format: $data"); // Debug log
+      }
+
+      isLoading = false; // Set loading to false
+      update(); // Notify the UI to hide the loader
     } catch (e) {
-      print("Error fetching responders: $e");
-      isLoading = false;
-      update(); // Update UI in case of error
+      print("Error fetching responders: $e"); // Debug log
+      isLoading = false; // Ensure loading stops on error
+      update();
     }
   }
 }

@@ -4,9 +4,14 @@ import 'package:get/get.dart';
 import 'package:piffers/Views/BottomNav/MoreScreen.dart';
 import 'package:piffers/Views/BottomNav/RespondersList.dart';
 import 'package:piffers/Views/PdfScreen.dart';
+import 'package:piffers/Views/Utils/Timer.dart';
 import 'package:piffers/Views/Utils/utils.dart';
+import 'package:piffers/Views/controllers/Uicontroller.dart';
 import 'package:piffers/Views/controllers/authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:piffers/Views/controllers/pdfcontroller.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class LocateResponder extends StatefulWidget {
   @override
@@ -16,6 +21,9 @@ class LocateResponder extends StatefulWidget {
 class _LocateResponderState extends State<LocateResponder> {
   // Track the selected index for bottom navigation
   final AuthController authController = Get.put(AuthController());
+  final UIController uiController = Get.put(UIController());
+  final PdfController pdfController = Get.put(PdfController());  // Create an instance of PdfController
+
   String _fullName = "";
 
   @override
@@ -45,6 +53,9 @@ class _LocateResponderState extends State<LocateResponder> {
 
   @override
   Widget build(BuildContext context) {
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -347,7 +358,7 @@ class _LocateResponderState extends State<LocateResponder> {
                   padding: EdgeInsets.all(10),
                   child: Container(
                     height: 100,
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -424,21 +435,40 @@ class _LocateResponderState extends State<LocateResponder> {
                                   itemCount: pdfFiles.length,
                                   itemBuilder: (context, index) {
                                     final pdf = pdfFiles[index];
-                                    return ListTile(
-                                      title: Text(pdf['name']!),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the modal
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PdfViewerScreen(
-                                                    pdfPath: pdf['path']!),
+
+                                    return Obx(() {
+                                      // Get the selected PDF path from GetX
+                                      final selectedPdfPath = pdfController.selectedPdfPath.value;
+
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                        width: MediaQuery.of(context).size.width,  // Set width based on screen size
+                                        child: Card(
+                                          elevation: 5,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                        );
-                                      },
-                                    );
+                                          child: ListTile(
+                                            leading: const Icon(Icons.picture_as_pdf, color: Colors.blue),  // Leading PDF icon
+                                            title: Text(pdf['name']!),
+                                            trailing: IconButton(
+                                              icon: Icon(
+                                                // Check if this PDF is selected
+                                                    Icons.visibility,
+
+                                                color: selectedPdfPath == pdf['path'] ? Colors.blue : Colors.grey,
+                                              ),
+                                              onPressed: () {
+                                                // Toggle selection using GetX controller
+                                                pdfController.togglePdfSelection(pdf['path']!);
+                                                Get.to( PdfViewerScreen(pdfPath: pdf['path']!));
+                                              },
+                                            ),
+
+                                          ),
+                                        ),
+                                      );
+                                    });
                                   },
                                 );
                               },
@@ -473,21 +503,40 @@ class _LocateResponderState extends State<LocateResponder> {
                                   itemCount: pdfFiles.length,
                                   itemBuilder: (context, index) {
                                     final pdf = pdfFiles[index];
-                                    return ListTile(
-                                      title: Text(pdf['name']!),
-                                      onTap: () {
-                                        Navigator.pop(
-                                            context); // Close the modal
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PdfViewerScreen(
-                                                    pdfPath: pdf['path']!),
+
+                                    return Obx(() {
+                                      // Get the selected PDF path from GetX
+                                      final selectedPdfPath = pdfController.selectedPdfPath.value;
+
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                        width: MediaQuery.of(context).size.width,  // Set width based on screen size
+                                        child: Card(
+                                          elevation: 5,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                        );
-                                      },
-                                    );
+                                          child: ListTile(
+                                            leading: const Icon(Icons.picture_as_pdf, color: Colors.blue),  // Leading PDF icon
+                                            title: Text(pdf['name']!),
+                                            trailing: IconButton(
+                                              icon: Icon(
+                                                // Check if this PDF is selected
+                                                Icons.visibility,
+
+                                                color: selectedPdfPath == pdf['path'] ? Colors.blue : Colors.grey,
+                                              ),
+                                              onPressed: () {
+                                                // Toggle selection using GetX controller
+                                                pdfController.togglePdfSelection(pdf['path']!);
+                                                Get.to( PdfViewerScreen(pdfPath: pdf['path']!));
+                                              },
+                                            ),
+
+                                          ),
+                                        ),
+                                      );
+                                    });
                                   },
                                 );
                               },
@@ -516,13 +565,19 @@ class _LocateResponderState extends State<LocateResponder> {
                     children: [
                       // HELP Button in the center
                       Positioned(
-                          right: 100,
-                          bottom: 150,
+                        right: 100,
+                        bottom: 150,
+                        child: InkWell(
+                          onTap: () {
+                            Get.dialog(CountdownDialog());
+                          },
                           child: SvgPicture.asset(
                             'assets/svg/helpB.svg', // Path to your SVG file
                             width: 180,
                             height: 180,
-                          )),
+                          ),
+                        ),
+                      ),
 
                       // KEEP AN EYE Button (top-right relative to the center)
                       Positioned(
@@ -530,43 +585,59 @@ class _LocateResponderState extends State<LocateResponder> {
                         top: 10,
                         width: 100,
                         height: 100,
-                        child: SvgPicture.asset(
-                          'assets/svg/kEye.svg', // Path to your SVG file
+                        child: InkWell(
+                          onTap: openGoogleMaps, // Trigger the map view implementation
+                          child: SvgPicture.asset(
+                            'assets/svg/kEye.svg', // Path to your SVG file
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-
                       // Self Response (left of the center)
-                      Positioned(
-                        left: 80,
-                        top: 90,
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/selfR.png"),
-                          ],
-                        ),
-                      ),
+                      Obx(() {
+                        double xPos = screenWidth * uiController.selfResponderPosition.value.dx;
+                        double yPos = screenHeight * uiController.selfResponderPosition.value.dy;
+                        return Positioned(
+                          left: xPos,
+                          top: yPos,
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/selfR.png"),
+                            ],
+                          ),
+                        );
+                      }),
 
                       // Add Responder (bottom-left relative to the center)
-                      Positioned(
-                        left: 30,
-                        bottom: 200,
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/Croom.png"),
-                          ],
-                        ),
-                      ),
+                      Obx(() {
+                        double xPos = screenWidth * uiController.addResponderPosition.value.dx;
+                        double yPos = screenHeight * uiController.addResponderPosition.value.dy;
+                        return Positioned(
+                          left: xPos,
+                          bottom: yPos,
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/Croom.png"),
+                            ],
+                          ),
+                        );
+                      }),
 
                       // More (bottom-right relative to the center)
-                      Positioned(
-                        left: 90,
-                        bottom: 80,
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/Bike.png"),
-                          ],
-                        ),
-                      ),
+                      Obx(() {
+                        double xPos = screenWidth * uiController.morePosition.value.dx;
+                        double yPos = screenHeight * uiController.morePosition.value.dy;
+                        return Positioned(
+                          left: xPos,
+                          bottom: yPos,
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/Bike.png"),
+                            ],
+                          ),
+                        );
+                      }),
+
                     ],
                   ),
                 )
@@ -580,5 +651,15 @@ class _LocateResponderState extends State<LocateResponder> {
 
   Future<void> _logoutUser() async {
     authController.logout();
+  }
+  Future<void> openGoogleMaps() async {
+    const String lat = "33.6844"; // Latitude for Islamabad
+    const String lng = "73.0479"; // Longitude for Islamabad
+    final Uri googleMapsUrl = Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl);
+    } else {
+      throw "Could not open Google Maps.";
+    }
   }
 }

@@ -25,58 +25,60 @@ class _ResetPasswordState extends State<ResetPassword> {
         title: Text('Reset Password'),
         backgroundColor: Colors.white70,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Image(
-                image: AssetImage("assets/png/reset.png"),
-                width: double.infinity,
-                height: 200,
-              ),
-              SizedBox(height: 20),
-              // New Password Field
-              Utils().buildTextField(
-                  "Enter your new password below:", _newPasswordController),
-              SizedBox(height: 20),
-              Utils().buildTextField(
-                  "Confirm Password:", _confirmPasswordController),
-
-              SizedBox(height: 20),
-
-              // Reset Button
-              SizedBox(
-                width: double.infinity,
-                child: Center(
-                  child: Obx(() {
-                    return authController.isLoading.value
-                        ? const CircularProgressIndicator() // Show loader while sending the reset request
-                        : ElevatedButton(
-                            onPressed: _onForgotPasswordPressed,
-                            // Trigger the reset password action
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(7, 52, 91, 1),
-                              // Blue background
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 100, vertical: 15),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: const Text(
-                              'Forgot Password?',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 22),
-                            ),
-                          );
-                  }),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Image(
+                  image: AssetImage("assets/png/reset.png"),
+                  width: double.infinity,
+                  height: 200,
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                // New Password Field
+                Utils().buildTextField(
+                    "Enter your new password below:", _newPasswordController),
+                SizedBox(height: 20),
+                Utils().buildTextField(
+                    "Confirm Password:", _confirmPasswordController),
+        
+                SizedBox(height: 20),
+        
+                // Reset Button
+                SizedBox(
+                  width: double.infinity,
+                  child: Center(
+                    child: Obx(() {
+                      return authController.isLoading.value
+                          ? const CircularProgressIndicator() // Show loader while sending the reset request
+                          : ElevatedButton(
+                              onPressed: _onForgotPasswordPressed,
+                              // Trigger the reset password action
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(7, 52, 91, 1),
+                                // Blue background
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 100, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                              child: const Text(
+                                'Forgot Password?',
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 22),
+                              ),
+                            );
+                    }),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

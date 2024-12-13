@@ -24,23 +24,36 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
       appBar: AppBar(
         title: const Text('Responders'),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add, color: Colors.black),
+            onPressed: () {
+              // Navigate to the Add Responder screen
+              Get.to(Addresponder());
+            },
+          ),
+        ],
       ),
-      body: Builder(
-        builder: (context) {
-          if (responderController.isLoading) {
+
+      body: GetBuilder<ResponderController>(
+        builder: (controller) {
+          if (controller.isLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
           // If no responders are available
-          if (responderController.responders.isEmpty) {
+          if (controller.responders.isEmpty) {
             return Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('No responders found'),
+                  const Text(
+                    'No responders found',
+                    style: TextStyle(fontSize: 18),
+                  ),
                   const SizedBox(height: 10),
                   InkWell(
                     onTap: () {
@@ -58,9 +71,9 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
 
           // If responders are available, display them in a list
           return ListView.builder(
-            itemCount: responderController.responders.length,
+            itemCount: controller.responders.length,
             itemBuilder: (context, index) {
-              final responder = responderController.responders[index];
+              final responder = controller.responders[index];
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
@@ -86,9 +99,11 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: CircleAvatar(
                               radius: 40,
-                              backgroundImage: NetworkImage(
-                                "https://sos.piffers.net/${responder['responders_image'] ?? 'default_image_url'}",
-                              ),
+                              backgroundImage: responder['responders_image'] != null
+                                  ? NetworkImage(
+                                  "https://sos.piffers.net/${responder['responders_image']}")
+                                  : const AssetImage('assets/images/placeholder.png')
+                              as ImageProvider,
                               onBackgroundImageError: (exception, stackTrace) {
                                 print('Error loading image: $exception');
                               },
@@ -137,13 +152,27 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
                             ),
                             onPressed: () {
                               // Display responder details
-                              print('Name: ${responder['name']}');
-                              print('Father Name: ${responder['father_name']}');
-                              print('CNIC: ${responder['cnic']}');
-                              print('Relation: ${responder['relation']}');
-                              print('Address: ${responder['address']}');
-                              print('Email: ${responder['email']}');
-                              print('Phone: ${responder['phone']}');
+                              Get.dialog(AlertDialog(
+                                title: Text('Details for ${responder['name'] ?? 'Unknown'}'),
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("Father Name: ${responder['father_name'] ?? 'N/A'}"),
+                                    Text("CNIC: ${responder['cnic'] ?? 'N/A'}"),
+                                    Text("Relation: ${responder['relation'] ?? 'N/A'}"),
+                                    Text("Address: ${responder['address'] ?? 'N/A'}"),
+                                    Text("Email: ${responder['email'] ?? 'N/A'}"),
+                                    Text("Phone: ${responder['phone'] ?? 'N/A'}"),
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: const Text("Close"),
+                                  ),
+                                ],
+                              ));
                             },
                             child: const Text(
                               "View Details",
@@ -161,9 +190,23 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
           );
         },
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(right: 10,bottom: 10),
+        child: FloatingActionButton(
+          onPressed: () {
+            // Navigate to the Add Responder screen
+            Get.to(Addresponder());
+          },
+          backgroundColor: const Color.fromRGBO(7, 52, 91, 1),
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+      ),
+
     );
+
   }
 }
+
 
 
 
