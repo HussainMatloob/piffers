@@ -11,6 +11,8 @@ import 'package:piffers/Views/controllers/authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piffers/Views/controllers/pdfcontroller.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocateResponder extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _LocateResponderState extends State<LocateResponder> {
   final AuthController authController = Get.put(AuthController());
   final UIController uiController = Get.put(UIController());
   final PdfController pdfController =
-      Get.put(PdfController()); // Create an instance of PdfController
+  Get.put(PdfController()); // Create an instance of PdfController
 
   String _fullName = "";
 
@@ -53,20 +55,26 @@ class _LocateResponderState extends State<LocateResponder> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Center(
               child: Text(
-            "HOME",
-            style: GoogleFonts.inknutAntiqua(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          )),
+                "HOME",
+                style: GoogleFonts.inknutAntiqua(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
           actions: [
             IconButton(
               icon: Image.asset('assets/png/logo1.png'),
@@ -305,11 +313,14 @@ class _LocateResponderState extends State<LocateResponder> {
               children: [
                 Container(
                   height: 130,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(45)),
+                    BorderRadius.vertical(bottom: Radius.circular(45)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,7 +333,7 @@ class _LocateResponderState extends State<LocateResponder> {
                               padding: EdgeInsets.only(left: 10),
                               child: CircleAvatar(
                                 backgroundImage:
-                                    AssetImage('assets/png/profile.png'),
+                                AssetImage('assets/png/profile.png'),
                                 radius: 40,
                               ),
                             ),
@@ -357,7 +368,10 @@ class _LocateResponderState extends State<LocateResponder> {
                   padding: EdgeInsets.all(10),
                   child: Container(
                     height: 100,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     padding: const EdgeInsets.all(16),
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -408,27 +422,27 @@ class _LocateResponderState extends State<LocateResponder> {
                                     {
                                       'name': 'PIFFERSHiring&ScreeningFile',
                                       'path':
-                                          'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
+                                      'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
                                     },
                                     {
                                       'name': 'PIFFERSSecurityServices',
                                       'path':
-                                          'assets/pdf/PIFFERSSecurityServices.pdf',
+                                      'assets/pdf/PIFFERSSecurityServices.pdf',
                                     },
                                     {
                                       'name': 'PIFFERSSecurityUniformGallery',
                                       'path':
-                                          'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
+                                      'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
                                     },
                                     {
                                       'name': 'PIFFERSSecurityWeaponGallery',
                                       'path':
-                                          'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
+                                      'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
                                     },
                                     {
                                       'name': 'PsychotherapyProgressReport',
                                       'path':
-                                          'assets/pdf/PsychotherapyProgressReport.pdf',
+                                      'assets/pdf/PsychotherapyProgressReport.pdf',
                                     },
                                   ];
 
@@ -446,13 +460,16 @@ class _LocateResponderState extends State<LocateResponder> {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 15),
                                           width:
-                                              MediaQuery.of(context).size.width,
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width,
                                           // Set width based on screen size
                                           child: Card(
                                             elevation: 5,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                             ),
                                             child: ListTile(
                                               leading: const Icon(
@@ -466,7 +483,7 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   Icons.visibility,
 
                                                   color: selectedPdfPath ==
-                                                          pdf['path']
+                                                      pdf['path']
                                                       ? Colors.blue
                                                       : Colors.grey,
                                                 ),
@@ -474,7 +491,7 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   // Toggle selection using GetX controller
                                                   pdfController
                                                       .togglePdfSelection(
-                                                          pdf['path']!);
+                                                      pdf['path']!);
                                                   Get.to(PdfViewerScreen(
                                                       pdfPath: pdf['path']!));
                                                 },
@@ -527,13 +544,16 @@ class _LocateResponderState extends State<LocateResponder> {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 15),
                                           width:
-                                              MediaQuery.of(context).size.width,
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width,
                                           // Set width based on screen size
                                           child: Card(
                                             elevation: 5,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                             ),
                                             child: ListTile(
                                               leading: const Icon(
@@ -547,7 +567,7 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   Icons.visibility,
 
                                                   color: selectedPdfPath ==
-                                                          pdf['path']
+                                                      pdf['path']
                                                       ? Colors.blue
                                                       : Colors.grey,
                                                 ),
@@ -555,7 +575,7 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   // Toggle selection using GetX controller
                                                   pdfController
                                                       .togglePdfSelection(
-                                                          pdf['path']!);
+                                                      pdf['path']!);
                                                   Get.to(PdfViewerScreen(
                                                       pdfPath: pdf['path']!));
                                                 },
@@ -589,51 +609,41 @@ class _LocateResponderState extends State<LocateResponder> {
                 Expanded(
                   child: Stack(
                     alignment: Alignment.center,
-                    // Center the widgets by default
                     children: [
                       // HELP Button in the center
-
                       Positioned(
-                        top: MediaQuery.of(context).size.height * 0.12,
+                        top: Get.height * 0.12, // Adjust position relative to screen height
                         child: InkWell(
                           onTap: () {
                             Get.dialog(CountdownDialog());
                           },
                           child: SvgPicture.asset(
-                              'assets/svg/helpB.svg', // Path to your SVG file
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              // Adjust width relative to screen size
-                              height: MediaQuery.of(context).size.height *
-                                  0.2 // Adjust height relative to screen size
-                              ),
+                            'assets/svg/helpB.svg',
+                            width: Get.width * 0.3, // Adjust width relative to screen width
+                            height: Get.height * 0.2, // Adjust height relative to screen height
+                          ),
                         ),
                       ),
 
                       // KEEP AN EYE Button (top-right relative to the center)
                       Positioned(
-                        right: MediaQuery.of(context).size.width *
-                            0.05, // Adjust right margin
-                        top: MediaQuery.of(context).size.height *
-                            0.01, // Adjust top margin
+                        right: Get.width * 0.05, // Adjust right margin
+                        top: Get.height * 0.01, // Adjust top margin
                         child: InkWell(
                           onTap: openGoogleMaps,
-                          // Trigger the map view implementation
                           child: SvgPicture.asset(
-                            'assets/svg/kEye.svg', // Path to your SVG file
+                            'assets/svg/kEye.svg',
                             fit: BoxFit.contain,
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            // Adjust width relative to screen size
-                            height: MediaQuery.of(context).size.height *
-                                0.08, // Adjust height relative to screen size
+                            width: Get.width * 0.15, // Adjust width for responsiveness
+                            height: Get.height * 0.08, // Adjust height for responsiveness
                           ),
                         ),
                       ),
 
-                      // Self Response (left of the center)
-
+                      // Self Response (top-left relative to the center)
                       Positioned(
-                        top: MediaQuery.of(context).size.height * 0.02,
-                        left: MediaQuery.of(context).size.width * 0.2,
+                        top: Get.height * 0.02, // Adjust position relative to screen height
+                        left: Get.width * 0.12, // Adjust position relative to screen width
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/selfR.png"),
@@ -642,10 +652,9 @@ class _LocateResponderState extends State<LocateResponder> {
                       ),
 
                       // Add Responder (bottom-left relative to the center)
-
                       Positioned(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        bottom: MediaQuery.of(context).size.height * 0.26,
+                        left: Get.width * 0.05, // Adjust position relative to screen width
+                        bottom: Get.height * 0.26, // Adjust position relative to screen height
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/Croom.png"),
@@ -654,10 +663,9 @@ class _LocateResponderState extends State<LocateResponder> {
                       ),
 
                       // More (bottom-right relative to the center)
-
                       Positioned(
-                        left: MediaQuery.of(context).size.width * 0.15,
-                        bottom: MediaQuery.of(context).size.height * 0.12,
+                        left: Get.width * 0.15, // Adjust position relative to screen width
+                        bottom: Get.height * 0.12, // Adjust position relative to screen height
                         child: Column(
                           children: [
                             Utils().buildCategoryItem("assets/png/Bike.png"),
@@ -666,7 +674,8 @@ class _LocateResponderState extends State<LocateResponder> {
                       ),
                     ],
                   ),
-                )
+                ),
+
               ],
             ),
           ],
@@ -680,14 +689,40 @@ class _LocateResponderState extends State<LocateResponder> {
   }
 
   Future<void> openGoogleMaps() async {
-    const String lat = "33.6844"; // Latitude for Islamabad
-    const String lng = "73.0479"; // Longitude for Islamabad
-    final Uri googleMapsUrl =
-        Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$lng");
-    if (await canLaunchUrl(googleMapsUrl)) {
-      await launchUrl(googleMapsUrl);
-    } else {
-      throw "Could not open Google Maps.";
+    // Step 1: Check and Request Location Permissions
+    var status = await Permission.location.request();
+
+    if (status.isGranted) {
+      // Permission granted, proceed to get the user's location
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
+
+        // Step 2: Construct Google Maps URL with user's coordinates
+        final String lat = position.latitude.toString();
+        final String lng = position.longitude.toString();
+        final Uri googleMapsUrl = Uri.parse(
+          "https://www.google.com/maps/search/?api=1&query=$lat,$lng",
+        );
+
+        // Step 3: Launch Google Maps
+        if (await canLaunchUrl(googleMapsUrl)) {
+          await launchUrl(googleMapsUrl);
+        } else {
+          throw "Could not open Google Maps.";
+        }
+      } catch (e) {
+        print("Error getting location: $e");
+      }
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      // Permission denied, notify the user
+      print("Location permission denied or permanently denied.");
+      // Optionally, open app settings for permanently denied permissions
+      if (status.isPermanentlyDenied) {
+        await openAppSettings();
+      }
     }
   }
+
 }
