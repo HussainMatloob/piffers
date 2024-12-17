@@ -100,18 +100,6 @@ class ApiService {
     }
   }
 
-  // // Reset Password API
-  // static Future<void> resetPassword(
-  //     String token, Map<String, dynamic> data) async {
-  //   final response = await http.post(
-  //     Uri.parse('$baseUrl/api/reset-password'),
-  //     headers: {'Accept': 'application/json'},
-  //     body: jsonEncode(data),
-  //   );
-  //   if (response.statusCode != 200) {
-  //     throw Exception("Failed to reset password");
-  //   }
-  // }
 
   // Add responder API
   static Future<void> addResponder({
