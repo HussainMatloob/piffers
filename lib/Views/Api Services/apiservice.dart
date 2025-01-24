@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:piffers/Views/Utils/utils.dart';
-import 'package:http_parser/http_parser.dart'; // <-- This is required for MediaType
-import 'package:get/get.dart';
 
 class ApiService {
   static const String baseUrl = "https://sos.piffers.net/public";

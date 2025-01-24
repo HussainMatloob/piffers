@@ -70,29 +70,34 @@ class Utils {
   Widget buildTextField(String label, TextEditingController controller,
       [TextInputType? inputType, bool obscureText = false]) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: GoogleFonts.nunitoSans(
-                fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black
-                // Line-height equivalent (lineHeight / fontSize)
-                ),
+                fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           TextFormField(
             controller: controller,
             keyboardType: inputType ?? TextInputType.text,
             obscureText: obscureText,
+            style: const TextStyle(color: Colors.white), // Text color set to white
             decoration: InputDecoration(
               contentPadding:
-                  EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15), // Circular radius
+                borderRadius: BorderRadius.circular(0),
               ),
-              fillColor: Colors.white,
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white), // Default border color
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 2), // Focused border color
+              ),
+              fillColor: Colors.transparent,
               filled: true,
             ),
             validator: (value) {
@@ -107,6 +112,12 @@ class Utils {
     );
   }
 
+
+
+
+
+
+
   Widget buildSearchField(TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -118,15 +129,16 @@ class Utils {
               const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15), // Circular border
+
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Colors.grey[200],
           hintText: 'Search...',
           // Placeholder text
           hintStyle: GoogleFonts.nunitoSans(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.grey,
+            color: Colors.grey[900],
           ),
           suffixIcon: IconButton(
             icon: const Icon(Icons.search),
@@ -245,8 +257,8 @@ class Utils {
           child: Center(
               child: Image.asset(
             imagePath, // Path to your SVG file
-            width: 80.0,
-            height: 80.0,
+            width: 100.0,
+            height: 100.0,
           )),
         ),
       ],

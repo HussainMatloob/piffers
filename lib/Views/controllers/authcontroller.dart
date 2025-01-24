@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/Api%20Services/apiservice.dart';
 import 'package:piffers/Views/BottomNav/Bottom_navbar.dart';
@@ -39,23 +38,43 @@ class AuthController extends GetxController {
   Future<void> login(String email, String password) async {
     try {
       isLoading(true);
+
+      // Make API request to login
       final response = await ApiService.loginUser({
         'email': email,
         'password': password,
       });
 
-
+      // Save token
       token.value = response['token'];
-      Get.snackbar('Success', 'Login successful!',snackPosition: SnackPosition.BOTTOM);
-      Get.to(BottomNavbar()); // Navigate to home screen
+
+      // Save user details in SharedPreferences
       Utils.saveString("token", response['token']);
-      Utils.saveString("email", response[email]);
+      Utils.saveString("email", response['user']['email']);
+      Utils.saveString("first_name", response['user']['first_name']);
+      Utils.saveString("last_name", response['user']['last_name']);
+
+      print( " First Name : ${response['user']['first_name']}");
+      print( " Last Name : ${response['user']['last_name']}");
+
+      Utils.saveString(
+          "name",
+          "${response['user']['first_name'] ?? ""} ${response['user']['last_name'] ?? ""}"
+      );
+
+      // Show success message
+      Get.snackbar('Success', response['message'] ?? 'Login successful!', snackPosition: SnackPosition.BOTTOM);
+
+      // Navigate to home screen
+      Get.offAll(BottomNavbar());
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Show error message
+      Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading(false);
     }
   }
+
 
   // Logout User
   Future<void> logout() async {

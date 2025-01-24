@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:piffers/Views/BottomNav/LocateResponder.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:piffers/Views/BottomNav/RespondersList.dart';
-
+import 'package:piffers/Views/Screens/MapViewScreen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../Screens/InboxScreen.dart';
+import '../Screens/KidsTrackingScreen.dart';
+import '../Screens/NewPlaceScreen.dart';
+import '../Screens/PetTrackingScreen.dart';
+import '../Screens/QuotesRequestScreen.dart';
+import '../Screens/WeatherScreen.dart';
 
 class BottomNavbar extends StatefulWidget {
   @override
@@ -17,12 +23,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
     topLeft: Radius.circular(25),
     topRight: Radius.circular(25),
   );
+
   // List of pages corresponding to each tab
   final List<Widget> _pages = [
     LocateResponder(),
-    ResponderListScreen(),
-    Center(child: Text("Private Eye")),
-    Center(child: Text("View My Camera")),
+    QuoteRequestScreen (),
+    PetTrackingScreen(),
+    MapViewScreen(placeType: "Home")
   ];
 
   @override
@@ -32,72 +39,75 @@ class _BottomNavbarState extends State<BottomNavbar> {
         backgroundColor: Colors.white,
         body: _pages[_selectedIndex], // Display the selected page
         bottomNavigationBar: SnakeNavigationBar.color(
-           height: 80,
-          shape:  RoundedRectangleBorder(borderRadius: _borderRadius),
-          // Set the background color
-          backgroundColor: Colors.white ,
+          height: 60,
+          shape: RoundedRectangleBorder(borderRadius: _borderRadius),
+          backgroundColor: Colors.white, // Background color of the navigation bar
           selectedLabelStyle: GoogleFonts.inknutAntiqua(
             fontSize: 11,
             fontWeight: FontWeight.w400,
-            height: 1.35, // Equivalent to line-height: 14.85px
+            height: 1.35,
             textStyle: const TextStyle(
               decoration: TextDecoration.none,
-              color: Colors.grey// No underline by default
+              color: Colors.red, // Selected label color set to red
             ),
           ),
           unselectedLabelStyle: GoogleFonts.inknutAntiqua(
             fontSize: 11,
             fontWeight: FontWeight.w400,
-            height: 1.35, // Equivalent to line-height: 14.85px
+            height: 1.35,
             textStyle: const TextStyle(
-              decoration: TextDecoration.none, // No underline by default
+              decoration: TextDecoration.none, // No underline for unselected labels
+              color: Colors.black, // Unselected label color (default black)
             ),
           ),
-          showUnselectedLabels: true,
-          snakeShape: SnakeShape.indicator, // Snake shape around the selected tab
-          snakeViewColor: Colors.black, // Color of the snake indicator
-          // Define the navigation items
+          snakeViewColor: Colors.red, // Snake indicator color
+          selectedItemColor: Colors.red, // Selected icon color set to red
+          unselectedItemColor: Colors.black, // Unselected icon color set to black
+          showSelectedLabels: true,
+          showUnselectedLabels: true
+          ,
           items: [
-             BottomNavigationBarItem(
-              icon: Image.asset(
-                'assets/png/moveloc.png', // Replace with your image path
-                height: 35, // Adjust size as needed
-                width: 35,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svg/home.svg',
+                height: 30,
+                width: 30,
               ),
-              label: "Locate Responder",
-            ),
-             BottomNavigationBarItem(
-              icon:  Image.asset(
-                'assets/png/trackloc.png', // Replace with your image path
-                height: 35, // Adjust size as needed
-                width: 35,
-              ),
-              label: "Piffers Responder",
+              label: "Home",
             ),
             BottomNavigationBarItem(
-              icon:  Image.asset(
-                'assets/png/eyeicon.png', // Replace with your image path
-                height: 35, // Adjust size as needed
-                width: 35,
+              icon: SvgPicture.asset(
+                'assets/svg/watchme.svg',
+                height: 30,
+                width: 30,
               ),
-              label: "Private Eye",
+              label: "Watch me",
             ),
-             BottomNavigationBarItem(
-              icon:  Image.asset(
-                'assets/png/camera.png', // Replace with your image path
-                height: 35, // Adjust size as needed
-                width: 35,
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svg/premiume.svg',
+                height: 30,
+                width: 30,
               ),
-              label: "View My Camera",
+              label: "Premium",
+            ),
+            BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/svg/more.svg',
+                height: 30,
+                width: 30,
+              ),
+              label: "More",
             ),
           ],
-          currentIndex: _selectedIndex, // Set the selected index
+          currentIndex: _selectedIndex,
           onTap: (index) {
             setState(() {
               _selectedIndex = index; // Update the selected index
             });
           },
         ),
+
       ),
     );
   }
