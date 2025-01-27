@@ -26,7 +26,7 @@ class AuthController extends GetxController {
       Utils.saveString("firstname",  firstName);
       Utils.saveString("lastname",  lastName);
       Get.snackbar('Success', 'Registration successful!',snackPosition: SnackPosition.BOTTOM);
-      Get.to(Login());
+      Get.to(const Login());
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
@@ -70,6 +70,8 @@ class AuthController extends GetxController {
     } catch (e) {
       // Show error message
       Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+      print("Login Response : ${e.toString()}");
+
     } finally {
       isLoading(false);
     }
@@ -77,12 +79,14 @@ class AuthController extends GetxController {
 
 
   // Logout User
-  Future<void> logout() async {
+  Future<void> logout()  async {
     try {
       isLoading(true);
-      String? token1=await  Utils.getString("token");
+      Future<String?> token1=  Utils.getString("token");
       await ApiService.logoutUser(token1.toString());
-      Utils.clear();
+
+      Utils.saveString("token", '');
+      print("Token: $token1");
       token.value = '';
       Get.offAllNamed('/login'); // Navigate to login screen
     } catch (e) {

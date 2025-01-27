@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controllers/sos_controller.dart';
 
 class SOSScreen extends StatelessWidget {
@@ -54,9 +53,11 @@ class SOSScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (!controller.isTimerRunning.value &&
-                        !controller.isTimerEnded.value)
+                        (!controller.isTimerEnded.value ||
+                            controller.isTimerEnded.value))
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          await controller.getCurrentLocation();
                           controller.startTimer();
                         },
                         child: Container(
@@ -107,7 +108,7 @@ class SOSScreen extends StatelessWidget {
                           ),
                         ),
                       )
-                    else
+                    else if (controller.isTimerRunning.value)
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(24),
@@ -117,7 +118,9 @@ class SOSScreen extends StatelessWidget {
                               Column(
                                 children: [
                                   Text(
-                                    'Tap to cancel',
+                                    controller.isTimerEnded.value
+                                        ? 'SOS sent successfully'
+                                        : 'Tap to cancel',
                                     style: TextStyle(
                                       color: Colors.blue[900],
                                       fontSize: 24,
@@ -177,7 +180,7 @@ class SOSScreen extends StatelessWidget {
                               SizedBox(
                                 width: Get.width * 0.8,
                                 child: Padding(
-                                  padding:  const EdgeInsets.symmetric(vertical: 24, ),
+                                  padding: const EdgeInsets.symmetric(vertical: 24),
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue[900],
@@ -187,10 +190,19 @@ class SOSScreen extends StatelessWidget {
                                     ),
                                     onPressed: () {
                                       controller.cancelTimer();
+                                      controller.startTimer();
+                                      Get.back();
                                     },
-                                    child:   const Padding(
-                                        padding:  EdgeInsets.symmetric(vertical: 18, ),
-                                        child: Text('Tap to cancel', style: TextStyle(color: Colors.white,fontSize: 24),)),
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 18),
+                                      child: Text(
+                                        'Tap to cancel',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

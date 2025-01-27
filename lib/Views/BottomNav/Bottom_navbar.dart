@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:piffers/Views/BottomNav/LocateResponder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:piffers/Views/BottomNav/MoreScreen.dart';
 import 'package:piffers/Views/Screens/MapViewScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../Screens/InboxScreen.dart';
@@ -29,7 +30,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
     LocateResponder(),
     QuoteRequestScreen (),
     PetTrackingScreen(),
-    MapViewScreen(placeType: "Home")
+    MoreScreen(),
   ];
 
   @override

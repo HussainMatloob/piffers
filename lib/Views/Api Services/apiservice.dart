@@ -98,6 +98,55 @@ class ApiService {
   }
 
 
+  Future<Map<String, dynamic>> requestHelp({
+    required String message,
+    required double latitude,
+    required double longitude,
+  }) async {
+    String? token = await Utils.getString('token');
+
+    if (token == null) {
+      throw Exception('Token is null. Ensure the user is logged in.');
+    }
+
+    final url = Uri.parse('$baseUrl/api/request-help');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final body = jsonEncode({
+      'message': message,
+      'latitude': latitude,
+      'longitude': longitude,
+    });
+
+    print('Sending help request...');
+    print('URL: $url');
+    print('Headers: $headers');
+    print('Body: $body');
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        // Parse the response and return the message
+        final parsedResponse = jsonDecode(response.body);
+        print('Parsed response: $parsedResponse');
+        return parsedResponse; // Should return {"message": "..."}
+      } else {
+        throw Exception('Failed to send help request. Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception occurred: $e');
+      throw Exception('Error sending help request: $e');
+    }
+  }
+
+
   // Add responder API
   static Future<void> addResponder({
     required String name,

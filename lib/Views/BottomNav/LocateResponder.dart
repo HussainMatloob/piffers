@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:piffers/Views/BottomNav/MoreScreen.dart';
 import 'package:piffers/Views/BottomNav/RespondersList.dart';
 import 'package:piffers/Views/PdfScreen.dart';
+import 'package:piffers/Views/Screens/PetTrackingScreen.dart';
 import 'package:piffers/Views/Screens/SOSscreen.dart';
 import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/controllers/Uicontroller.dart';
@@ -15,7 +16,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../Screens/NewPlaceScreen.dart';
+import '../Screens/UserProfile.dart';
 import '../Widgets/eye_container.dart';
+import '../controllers/places_controller.dart';
 import 'AddResponder.dart';
 
 class LocateResponder extends StatefulWidget {
@@ -24,6 +27,8 @@ class LocateResponder extends StatefulWidget {
 }
 
 class _LocateResponderState extends State<LocateResponder> {
+
+  final PlaceController placeController = Get.put(PlaceController());
   // Track the selected index for bottom navigation
   final AuthController authController = Get.put(AuthController());
   final UIController uiController = Get.put(UIController());
@@ -154,20 +159,26 @@ class _LocateResponderState extends State<LocateResponder> {
                         ),
                       ),
                       const SizedBox(height: 8,),
-                      const Row(
-                        children: [
-                          CircleAvatar(
-                            maxRadius: 30,
-                            child: ClipRect(
-                              child: Icon(Icons.key_sharp, size: 35,color: Colors.black,),
+                      GestureDetector(
+                        onTap: (){
 
+                          Get.to(PetTrackingScreen());
+                        },
+                        child: const Row(
+                          children: [
+                            CircleAvatar(
+                              maxRadius: 30,
+                              child: ClipRect(
+                                child: Icon(Icons.key_sharp, size: 35,color: Colors.black,),
+
+                              ),
                             ),
-                          ),
 
-                          const SizedBox(width: 16,
-                          ),
-                          Text("Track your Pets", style: TextStyle(fontSize: 18, color: Colors.black),)
-                        ],
+                            const SizedBox(width: 16,
+                            ),
+                            Text("Track your Pets", style: TextStyle(fontSize: 18, color: Colors.black),)
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16,),
 
@@ -309,6 +320,7 @@ class _LocateResponderState extends State<LocateResponder> {
                 ),
                 onTap: () {
                   // Handle Home tap
+                  Get.to(UserProfileScreen());
                 },
               ),
               ListTile(
@@ -487,400 +499,428 @@ class _LocateResponderState extends State<LocateResponder> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(8)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/png/profile.png'),
-                                radius: 40,
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
+                children: [
+                  Container(
+                    height: 110,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(8)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 0),
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('assets/png/profile.png'),
+                                  radius: 40,
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(_fullName,
-                                      style: GoogleFonts.inknutAntiqua(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w300,
-                                      )),
-                                  const Text("At Office", style: TextStyle(fontSize: 12, color: Colors.black),),
-                                  const Text("Since 6:00 am", style: TextStyle(fontSize: 12, color: Colors.black),)
-                                ],
+                              const SizedBox(
+                                width: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Center(
-                        child: GestureDetector(
-                          onVerticalDragStart: (details) {
-                            initialPosition = details.localPosition.dy;
-                          },
-                          onVerticalDragUpdate: (details) {
-                            double delta =
-                                details.localPosition.dy - initialPosition;
-
-                            // Trigger dialog when the swipe gesture moves down by a certain threshold
-                            if (delta > 50) {
-                              _showTopDialog(context);
-                            }
-                          },
-                          child: Container(
-                            width: 80,
-                            height: 5,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[700],
-                              borderRadius: BorderRadius.circular(25),
-                            ),
+                              SizedBox(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(_fullName,
+                                        style: GoogleFonts.inknutAntiqua(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w300,
+                                        )),
+                                    const Text("At Office", style: TextStyle(fontSize: 12, color: Colors.black),),
+                                    const Text("Since 6:00 am", style: TextStyle(fontSize: 12, color: Colors.black),)
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5,left: 3,right: 3),
-                  child: Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(8),
-                            top: Radius.circular(8)),
-                      ),
-                      child: Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/png/responder.png',
-                                  height: double.infinity,
-                                ),
-                                iconSize: 70.0,
-                                onPressed: () {
-                                  Get.to(ResponderListScreen());
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/png/keys.png',
-                                  height: double.infinity,
-                                ),
-                                iconSize: 70.0,
-                                onPressed: () {
-                                  Get.to(MoreScreen());
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/png/logo1.png',
-                                  height: double.infinity,
-                                ),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      final List<Map<String, String>> pdfFiles = [
-                                        {
-                                          'name': 'TrainingHandBook',
-                                          'path':
-                                              'assets/pdf/TrainingHandBook.pdf',
-                                        },
-                                        {
-                                          'name': 'EscortServices',
-                                          'path': 'assets/pdf/EscortServices.pdf',
-                                        },
-                                        {
-                                          'name': 'MPRRScoreCard',
-                                          'path': 'assets/pdf/MPRRScoreCard.pdf',
-                                        },
-                                        {
-                                          'name': 'QRFBrochure',
-                                          'path': 'assets/pdf/QRFBrochure.pdf',
-                                        },
-                                        {
-                                          'name': 'PIFFERSHiring&ScreeningFile',
-                                          'path':
-                                              'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
-                                        },
-                                        {
-                                          'name': 'PIFFERSSecurityServices',
-                                          'path':
-                                              'assets/pdf/PIFFERSSecurityServices.pdf',
-                                        },
-                                        {
-                                          'name': 'PIFFERSSecurityUniformGallery',
-                                          'path':
-                                              'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
-                                        },
-                                        {
-                                          'name': 'PIFFERSSecurityWeaponGallery',
-                                          'path':
-                                              'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
-                                        },
-                                        {
-                                          'name': 'PsychotherapyProgressReport',
-                                          'path':
-                                              'assets/pdf/PsychotherapyProgressReport.pdf',
-                                        },
-                                      ];
-
-                                      return ListView.builder(
-                                        itemCount: pdfFiles.length,
-                                        itemBuilder: (context, index) {
-                                          final pdf = pdfFiles[index];
-
-                                          return Obx(() {
-                                            final selectedPdfPath = pdfController
-                                                .selectedPdfPath.value;
-
-                                            return Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 15),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: ListTile(
-                                                  leading: const Icon(
-                                                      Icons.picture_as_pdf,
-                                                      color: Colors.blue),
-                                                  title: Text(pdf['name']!),
-                                                  trailing: IconButton(
-                                                    icon: Icon(
-                                                      Icons.visibility,
-                                                      color: selectedPdfPath ==
-                                                              pdf['path']
-                                                          ? Colors.blue
-                                                          : Colors.grey,
-                                                    ),
-                                                    onPressed: () {
-                                                      pdfController
-                                                          .togglePdfSelection(
-                                                              pdf['path']!);
-                                                      Get.to(PdfViewerScreen(
-                                                          pdfPath: pdf['path']!));
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          });
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/png/logo2.png',
-                                  height: double.infinity,
-                                ),
-
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      final List<Map<String, String>> pdfFiles = [
-                                        {
-                                          'name': 'PIFFERSSedulous',
-                                          'path': 'assets/pdf/PIFFERSSedulous.pdf'
-                                        },
-                                        {
-                                          'name': 'SedulousProfile',
-                                          'path': 'assets/pdf/SedulousProfile.pdf'
-                                        },
-                                        {
-                                          'name': 'TrainingHandBook',
-                                          'path':
-                                              'assets/pdf/TrainingHandBook.pdf'
-                                        },
-                                      ];
-
-                                      return ListView.builder(
-                                        itemCount: pdfFiles.length,
-                                        itemBuilder: (context, index) {
-
-                                          final pdf = pdfFiles[index];
-                                          return Obx(() {
-                                            final selectedPdfPath = pdfController
-                                                .selectedPdfPath.value;
-
-                                            return Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 15),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: ListTile(
-                                                  leading: const Icon(
-                                                      Icons.picture_as_pdf,
-                                                      color: Colors.blue),
-                                                  title: Text(pdf['name']!),
-                                                  trailing: IconButton(
-                                                    icon: Icon(
-                                                      Icons.visibility,
-                                                      color: selectedPdfPath ==
-                                                              pdf['path']
-                                                          ? Colors.blue
-                                                          : Colors.grey,
-                                                    ),
-                                                    onPressed: () {
-                                                      pdfController
-                                                          .togglePdfSelection(
-                                                              pdf['path']!);
-                                                      Get.to(PdfViewerScreen(
-                                                          pdfPath: pdf['path']!));
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          });
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                ),
-                // Wrap Stack in Expanded to allow it to use available space
-                Expanded(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        top: 120, // Adjust top margin
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: InkWell(
-                            onTap: () {
-                              Get.dialog(SOSScreen());
+                        Center(
+                          child: GestureDetector(
+                            onVerticalDragStart: (details) {
+                              initialPosition = details.localPosition.dy;
                             },
-                            child: SvgPicture.asset(
-                              'assets/svg/helpB.svg',
-                              width: Get.width * 0.5,
-                              // Adjust width relative to screen width
-                              height: Get.height *
-                                  0.28, // Adjust height relative to screen height
+                            onVerticalDragUpdate: (details) {
+                              double delta =
+                                  details.localPosition.dy - initialPosition;
+
+                              // Trigger dialog when the swipe gesture moves down by a certain threshold
+                              if (delta > 50) {
+                                _showTopDialog(context);
+                              }
+                            },
+                            child: Column(
+                              spacing: 3,
+                              children: [
+                                Container(
+                                width: 70,
+                                height: 4,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[700],
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),   Container(
+                                width: 50,
+                                height: 4,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[700],
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ), Container(
+                                width: 30,
+                                height: 3,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[700],
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+
+                            ],
                             ),
                           ),
                         ),
-                      ),
-
-                      // KEEP AN EYE Button (top-right relative to the center)
-                      Positioned(
-                        right: Get.width * 0.02, // Adjust right margin
-                        top: Get.height * 0.0, // Adjust top margin
-                        child: SvgPicture.asset(
-                          'assets/svg/email.svg',
-                          fit: BoxFit.contain,
-                          width: Get.width * 0.15,
-                          // Adjust width for responsiveness
-                          height: Get.height *
-                              0.08, // Adjust height for responsiveness
-                        ),
-                      ),
-
-                      // Self Response (top-left relative to the center)
-                      Positioned(
-                        top: Get.height * 0.015,
-                        left: Get.width * 0.38,
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/selfR.png"),
-                          ],
-                        ),
-                      ),
-
-                      // Add Responder (bottom-left relative to the center)
-                      Positioned(
-                        left: Get.width * 0.03,
-                        // Adjust position relative to screen width
-                        bottom: Get.height * 0.1,
-                        // Adjust position relative to screen height
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/Croom.png"),
-                          ],
-                        ),
-                      ),
-
-                      // More (bottom-right relative to the center)
-                      Positioned(
-                        right: Get.width * 0.03,
-                        // Adjust position relative to screen width
-                        bottom: Get.height * 0.1,
-                        // Adjust position relative to screen height
-                        child: Column(
-                          children: [
-                            Utils().buildCategoryItem("assets/png/Bike.png"),
-                          ],
-                        ),
-                      ),
-
-                      Positioned(
-                        bottom: 15,
-                        left: 10,
-                        child: GestureDetector(
-                            onTap: openGoogleMaps, child: EyeContainer()),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5,left: 3,right: 3),
+                    child: Container(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(8),
+                              top: Radius.circular(8)),
+                        ),
+                        child: Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/png/responder.png',
+                                    height: double.infinity,
+                                  ),
+                                  iconSize: 70.0,
+                                  onPressed: () {
+                                    Get.to(ResponderListScreen());
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/png/keys.png',
+                                    height: double.infinity,
+                                  ),
+                                  iconSize: 70.0,
+                                  onPressed: () {
+                                    Get.to(MoreScreen());
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/png/logo1.png',
+                                    height: double.infinity,
+                                  ),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        final List<Map<String, String>> pdfFiles = [
+                                          {
+                                            'name': 'TrainingHandBook',
+                                            'path':
+                                                'assets/pdf/TrainingHandBook.pdf',
+                                          },
+                                          {
+                                            'name': 'EscortServices',
+                                            'path': 'assets/pdf/EscortServices.pdf',
+                                          },
+                                          {
+                                            'name': 'MPRRScoreCard',
+                                            'path': 'assets/pdf/MPRRScoreCard.pdf',
+                                          },
+                                          {
+                                            'name': 'QRFBrochure',
+                                            'path': 'assets/pdf/QRFBrochure.pdf',
+                                          },
+                                          {
+                                            'name': 'PIFFERSHiring&ScreeningFile',
+                                            'path':
+                                                'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
+                                          },
+                                          {
+                                            'name': 'PIFFERSSecurityServices',
+                                            'path':
+                                                'assets/pdf/PIFFERSSecurityServices.pdf',
+                                          },
+                                          {
+                                            'name': 'PIFFERSSecurityUniformGallery',
+                                            'path':
+                                                'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
+                                          },
+                                          {
+                                            'name': 'PIFFERSSecurityWeaponGallery',
+                                            'path':
+                                                'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
+                                          },
+                                          {
+                                            'name': 'PsychotherapyProgressReport',
+                                            'path':
+                                                'assets/pdf/PsychotherapyProgressReport.pdf',
+                                          },
+                                        ];
+
+                                        return ListView.builder(
+                                          itemCount: pdfFiles.length,
+                                          itemBuilder: (context, index) {
+                                            final pdf = pdfFiles[index];
+
+                                            return Obx(() {
+                                              final selectedPdfPath = pdfController
+                                                  .selectedPdfPath.value;
+
+                                              return Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 15),
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: Card(
+                                                  elevation: 5,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(10),
+                                                  ),
+                                                  child: ListTile(
+                                                    leading: const Icon(
+                                                        Icons.picture_as_pdf,
+                                                        color: Colors.blue),
+                                                    title: Text(pdf['name']!),
+                                                    trailing: IconButton(
+                                                      icon: Icon(
+                                                        Icons.visibility,
+                                                        color: selectedPdfPath ==
+                                                                pdf['path']
+                                                            ? Colors.blue
+                                                            : Colors.grey,
+                                                      ),
+                                                      onPressed: () {
+                                                        pdfController
+                                                            .togglePdfSelection(
+                                                                pdf['path']!);
+                                                        Get.to(PdfViewerScreen(
+                                                            pdfPath: pdf['path']!));
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    'assets/png/logo2.png',
+                                    height: double.infinity,
+                                  ),
+
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        final List<Map<String, String>> pdfFiles = [
+                                          {
+                                            'name': 'PIFFERSSedulous',
+                                            'path': 'assets/pdf/PIFFERSSedulous.pdf'
+                                          },
+                                          {
+                                            'name': 'SedulousProfile',
+                                            'path': 'assets/pdf/SedulousProfile.pdf'
+                                          },
+                                          {
+                                            'name': 'TrainingHandBook',
+                                            'path':
+                                                'assets/pdf/TrainingHandBook.pdf'
+                                          },
+                                        ];
+
+                                        return ListView.builder(
+                                          itemCount: pdfFiles.length,
+                                          itemBuilder: (context, index) {
+
+                                            final pdf = pdfFiles[index];
+                                            return Obx(() {
+                                              final selectedPdfPath = pdfController
+                                                  .selectedPdfPath.value;
+
+                                              return Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 15),
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: Card(
+                                                  elevation: 5,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(10),
+                                                  ),
+                                                  child: ListTile(
+                                                    leading: const Icon(
+                                                        Icons.picture_as_pdf,
+                                                        color: Colors.blue),
+                                                    title: Text(pdf['name']!),
+                                                    trailing: IconButton(
+                                                      icon: Icon(
+                                                        Icons.visibility,
+                                                        color: selectedPdfPath ==
+                                                                pdf['path']
+                                                            ? Colors.blue
+                                                            : Colors.grey,
+                                                      ),
+                                                      onPressed: () {
+                                                        pdfController
+                                                            .togglePdfSelection(
+                                                                pdf['path']!);
+                                                        Get.to(PdfViewerScreen(
+                                                            pdfPath: pdf['path']!));
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  // Wrap Stack in Expanded to allow it to use available space
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          top: 120, // Adjust top margin
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: InkWell(
+                              onTap: () {
+                                Get.dialog(SOSScreen());
+                              },
+                              child: SvgPicture.asset(
+                                'assets/svg/helpB.svg',
+                                width: Get.width * 0.5,
+                                // Adjust width relative to screen width
+                                height: Get.height *
+                                    0.28, // Adjust height relative to screen height
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // KEEP AN EYE Button (top-right relative to the center)
+                        Positioned(
+                          right: Get.width * 0.02, // Adjust right margin
+                          top: Get.height * 0.0, // Adjust top margin
+                          child: SvgPicture.asset(
+                            'assets/svg/email.svg',
+                            fit: BoxFit.contain,
+                            width: Get.width * 0.15,
+                            // Adjust width for responsiveness
+                            height: Get.height *
+                                0.08, // Adjust height for responsiveness
+                          ),
+                        ),
+
+                        // Self Response (top-left relative to the center)
+                        Positioned(
+                          top: Get.height * 0.015,
+                          left: Get.width * 0.38,
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/selfR.png"),
+                            ],
+                          ),
+                        ),
+
+                        // Add Responder (bottom-left relative to the center)
+                        Positioned(
+                          left: Get.width * 0.03,
+                          // Adjust position relative to screen width
+                          bottom: Get.height * 0.1,
+                          // Adjust position relative to screen height
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/Croom.png"),
+                            ],
+                          ),
+                        ),
+
+                        // More (bottom-right relative to the center)
+                        Positioned(
+                          right: Get.width * 0.03,
+                          // Adjust position relative to screen width
+                          bottom: Get.height * 0.1,
+                          // Adjust position relative to screen height
+                          child: Column(
+                            children: [
+                              Utils().buildCategoryItem("assets/png/Bike.png"),
+                            ],
+                          ),
+                        ),
+
+                        Positioned(
+                          bottom: 15,
+                          left: 10,
+                          child: GestureDetector(
+                              onTap: openGoogleMaps, child: EyeContainer()),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

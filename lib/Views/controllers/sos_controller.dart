@@ -1,32 +1,158 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:geolocator/geolocator.dart';
+import '../Api Services/apiservice.dart';
+
 class SOSController extends GetxController {
-  var timerText = '10'.obs;
-  var countdown = 10.obs;
+  final ApiService apiService = ApiService();
+
+  var isLoading = false.obs;
+  var responseMessage = ''.obs;
   var isTimerRunning = false.obs;
   var isTimerEnded = false.obs;
+  var timerText = '10'.obs;
 
-  void startTimer() {
-    isTimerRunning.value = true;
-    isTimerEnded.value = false;
-    countdown.value = 10;
-    timerText.value = countdown.value.toString();
-    Future.delayed(Duration(seconds: 1), updateTimer);
-  }
+  /// Fetches the current location
+  Future<Position?> getCurrentLocation() async {
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        Get.snackbar(
+          'Error',
+          'Location services are disabled. Please enable them in settings.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return null;
+      }
 
-  void updateTimer() {
-    if (countdown.value > 0) {
-      countdown.value--;
-      timerText.value = countdown.value.toString();
-      Future.delayed(Duration(seconds: 1), updateTimer);
-    } else {
-      timerText.value = '!';
-      isTimerEnded.value = true;
+      // Check location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          Get.snackbar(
+            'Error',
+            'Location permission denied. Please allow access in settings.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+          return null;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        Get.snackbar(
+          'Error',
+          'Location permission permanently denied. Please allow access in settings.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return null;
+      }
+
+      // Retrieve current position
+      return await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to get current location: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return null;
     }
   }
 
+  /// Sends a help request after fetching the location
+  Future<void> sendHelpRequest() async {
+    try {
+      isLoading.value = true;
+
+      // Get the user's current location
+      Position? position = await getCurrentLocation();
+      if (position == null) {
+        responseMessage.value = 'Unable to get location.';
+        return;
+      }
+
+      String message = 'I need immediate help! My location is ${position.latitude}, ${position.longitude}.';
+
+      final response = await apiService.requestHelp(
+        message: message,
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+
+
+      responseMessage.value = response['message'];
+      Get.snackbar(
+        'Help Requested',
+        responseMessage.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+
+      // Close the screen after showing success
+      Future.delayed(const Duration(seconds: 2), () {
+        Get.back();
+      });
+    } catch (e) {
+      responseMessage.value = 'Error: $e';
+      Get.snackbar(
+        'Error',
+        responseMessage.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Starts the timer for SOS
+  void startTimer() {
+    isTimerRunning.value = true;
+    isTimerEnded.value = false;
+    timerText.value = '10';
+
+    for (int i = 1; i <= 10; i++) {
+      Future.delayed(Duration(seconds: i), () {
+        if (isTimerRunning.value && !isTimerEnded.value) {
+          timerText.value = (10 - i).toString();
+        }
+      });
+    }
+
+    Future.delayed(const Duration(seconds: 10), () async {
+      if (isTimerRunning.value) {
+        isTimerEnded.value = true;
+        timerText.value = '!';
+        await sendHelpRequest(); // Fetch location and send the help request
+        resetTimer();
+      }
+    });
+  }
+
+  /// Cancels the timer
   void cancelTimer() {
     isTimerRunning.value = false;
+    isTimerEnded.value = true;
+    resetTimer();
+  }
+
+  /// Resets the timer values
+  void resetTimer() {
+    isTimerRunning.value = false;
     isTimerEnded.value = false;
-    timerText.value = 'Tap to\n send SOS';
+    timerText.value = '10';
   }
 }
