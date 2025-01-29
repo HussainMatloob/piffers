@@ -62,12 +62,22 @@ class InboxScreen extends StatelessWidget {
                       leading: CircleAvatar(
                         child: Text(message.name[0]),
                       ),
-                      title: Text(message.name, style: TextStyle(color: Colors.black),),
-                      subtitle: Text(message.message),
+                      title: Text(message.name,   style: GoogleFonts.outfit(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),),
+                      subtitle: Text(message.message,  style: GoogleFonts.outfit(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                      ),),
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(message.timestamp),
+                          Text(message.timestamp , style: GoogleFonts.outfit(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),),
                           if (message.unread)
                             Container(
                               margin: const EdgeInsets.only(top: 4.0),

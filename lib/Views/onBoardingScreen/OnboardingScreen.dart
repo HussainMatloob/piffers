@@ -87,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   InkWell(
                     onTap: (){
-                      Get.offNamed('/signup');
+                      Get.offNamed('/login');
                     },
                     child: const Text("Skip", style: TextStyle(fontSize: 16,color: Colors.grey)),
 
@@ -103,7 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         );
                       }
                       else {
-                        Get.offNamed('/signup'); // Navigate to Login Screen
+                        Get.offNamed('/login'); // Navigate to Login Screen
                       }
                     },
                     style: ElevatedButton.styleFrom(

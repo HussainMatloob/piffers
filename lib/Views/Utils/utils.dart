@@ -113,7 +113,48 @@ class Utils {
   }
 
 
-
+  Widget buildPasswordField(
+      String labelText,
+      TextEditingController controller, {
+        IconData icon = Icons.lock,
+        Color borderColor = Colors.white,
+      }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: true,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(color: Colors.white),
+        prefixIcon: Icon(
+          icon,
+          color: Colors.white,
+        ),
+        filled: true,
+        fillColor: Colors.transparent,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: borderColor),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a password';
+        } else if (value.length < 6) {
+          return 'Password must be at least 6 characters long';
+        }
+        return null;
+      },
+    );
+  }
 
 
 

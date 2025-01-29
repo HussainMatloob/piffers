@@ -20,39 +20,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Forgot Password'),
-        backgroundColor: Colors.white70,
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: const Color.fromRGBO(1, 39, 71, 1),
+      body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.only(top: 300, left: 20, right: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Image(
-                  image: AssetImage('assets/png/forget.jpg'),
-                  height: 200,
-                  width: double.infinity,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Forgot Password',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                const Center(
+                  child: Text(
+                    'Mail Address Here',
+                    style: TextStyle(
+                        fontSize: 28,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Please enter your email address. You will receive a code to verify your email and reset your password.',
+                const SizedBox(height: 10),
+                const Text('Enter the email address associated \n with your account ',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 15,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -61,16 +50,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(
+                      color: Colors.white, // Set text color to white
+                    ),
                     decoration: const InputDecoration(
-                      hintText: 'Enter Email',
+                      labelText: 'Email',
                       hintStyle: TextStyle(
-                        color: Colors.grey,
+                        color: Colors.white, // Hint text color
+                      ),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.grey, // Set prefix icon color to grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          color: Colors.red, // Set border color to red
+                        ),
+
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 40),
                   SizedBox(
                     width: double.infinity,
@@ -79,42 +80,119 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         return authController.isLoading.value
                             ? const CircularProgressIndicator() // Show loader while sending the email
                             : ElevatedButton(
-                          onPressed: _onForgotPasswordPressed,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                            const Color.fromRGBO(7, 52, 91, 1),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 100, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          child: const Text(
-                            'Send OTP',
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 18),
-                          ),
-                        );
+                                onPressed: _onForgotPasswordPressed,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromRGBO(126, 35, 35, 1),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 120, vertical: 10),
+                                 shape: const RoundedRectangleBorder(),
+                                ),
+                                child: const Text(
+                                   'Recover Password',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              );
                       }),
                     ),
                   ),
                 ] else ...<Widget>[
                   // OTP Input View
                   const Center(
-                    child:  Text(
+                    child: Text(
                       'Enter the OTP sent to your email',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                   const SizedBox(height: 20),
                   OtpTextField(
+                    cursorColor: Colors.black, // Set cursor color to white
                     numberOfFields: 4,
-                    borderColor: const Color(0xFF512DA8),
+                    fillColor: Colors.white, // Set background color to black
+                    filled: true,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                    borderColor: Colors.white, // Remove default border color
                     onSubmit: _onVerifyOtpPressed, // Verify OTP
+                    showFieldAsBox: true,
+                    focusedBorderColor: Colors.white, // Change focus border color to white
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,// White text color for focused OTP fields
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black, // Change background color to black when focused
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
 
+                  // add rich text for resend OTP
+                  RichText(
+                    text: const TextSpan(
+                      text: 'Didn\'t receive the OTP? ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Resend OTP',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 ],
+              ],
+            ),
+          ),
+
+          Positioned(
+            top: 0,
+            child: SizedBox(
+              width: Get.width,
+              child: Image.asset(
+                "assets/png/authB.png", // Replace with your image path
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          // create row for back icon and text
+          Positioned(
+            top: 40,
+            left: 20,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 24,
+                  ),
+                  color: Colors.white,
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                const Text(
+                  'Forgot Password',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
@@ -136,7 +214,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
 
     try {
-      await authController.sendOtp(emailController.text.toString() );
+      await authController.sendOtp(emailController.text.toString());
       print("Forget Email : ${emailController.text.toString()}");
       Utils.saveString("forgetemail", emailController.text.toString());
 
@@ -154,6 +232,4 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     Get.to(ResetPassword());
   }
-
-
 }

@@ -30,7 +30,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
     LocateResponder(),
     QuoteRequestScreen (),
     PetTrackingScreen(),
-    MoreScreen(),
+    InboxScreen(),
   ];
 
   @override

@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
       }
     });
 
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(), // Simple loading spinner
       ),

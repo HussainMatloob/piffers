@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../controllers/pet_trackting_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PetTrackingScreen extends StatelessWidget {
   final PetTrackingController controller = Get.put(PetTrackingController());
@@ -10,7 +11,11 @@ class PetTrackingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pet Tracking', style: TextStyle(color: Colors.white),),
+        title:  Text('Pet Tracking', style: GoogleFonts.outfit(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: Colors.white
+        ),),
         backgroundColor: Color.fromRGBO(1, 46, 85, 1),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
@@ -54,8 +59,14 @@ class PetTrackingScreen extends StatelessWidget {
                       leading: CircleAvatar(
                         child: Text(pet.name[0]),
                       ),
-                      title: Text(pet.name),
-                      subtitle: Text('${pet.status}\n${pet.time}'),
+                      title: Text(pet.name, style: GoogleFonts.outfit(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),),
+                      subtitle: Text('${pet.status}\n${pet.time}' , style: GoogleFonts.outfit(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                      ),),
                       onTap: () => controller.selectPet(pet),
                     );
                   },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piffers/Views/Utils/utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MoreScreen extends StatelessWidget {
 
@@ -128,11 +129,10 @@ class MoreScreen extends StatelessWidget {
         Container(
           width: 80, // Adjust size for icons
           height: 80,
-
           child: Center(
-            child: Image.asset(
+            child: SvgPicture.asset(
               imagePath, // Replace with your asset path
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
               width: 70,
               height: 70,
             ),

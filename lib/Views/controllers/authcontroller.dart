@@ -54,6 +54,7 @@ class AuthController extends GetxController {
       Utils.saveString("first_name", response['user']['first_name']);
       Utils.saveString("last_name", response['user']['last_name']);
 
+      printToken();
       print( " First Name : ${response['user']['first_name']}");
       print( " Last Name : ${response['user']['last_name']}");
 
@@ -218,6 +219,10 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<void> printToken() async {
+    String? token = await Utils.getString("token");
+    print("Token:======================== $token");
+  }
 
 
 }

@@ -7,6 +7,7 @@ import 'package:piffers/Views/PdfScreen.dart';
 import 'package:piffers/Views/Screens/PetTrackingScreen.dart';
 import 'package:piffers/Views/Screens/SOSscreen.dart';
 import 'package:piffers/Views/Utils/utils.dart';
+import 'package:piffers/Views/auth/ForgotPassworsd.dart';
 import 'package:piffers/Views/controllers/Uicontroller.dart';
 import 'package:piffers/Views/controllers/authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -338,6 +339,8 @@ class _LocateResponderState extends State<LocateResponder> {
                 ),
                 onTap: () {
                   // Handle Settings tap
+                  Get.to(ForgotPassword());
+
                 },
               ),
               ListTile(
@@ -841,7 +844,7 @@ class _LocateResponderState extends State<LocateResponder> {
                       alignment: Alignment.center,
                       children: [
                         Positioned(
-                          top: 120, // Adjust top margin
+                          top: 110, // Adjust top margin
                           child: Align(
                             alignment: Alignment.center,
                             child: InkWell(

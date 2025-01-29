@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../controllers/kids_tracking_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class KidTrackingScreen extends StatelessWidget {
   final KidTrackingController controller = Get.put(KidTrackingController());
@@ -11,7 +12,11 @@ class KidTrackingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(1, 46, 85, 1),
-        title:  Text('Kid Tracking',style: TextStyle(color: Colors.white),),
+        title:  Text('Kid Tracking',style: GoogleFonts.outfit(
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          color: Colors.white
+        ),),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         leading: IconButton(
@@ -55,8 +60,14 @@ class KidTrackingScreen extends StatelessWidget {
                       leading: CircleAvatar(
                         child: Text(kid.name[0]),
                       ),
-                      title: Text(kid.name),
-                      subtitle: Text('${kid.status}\n${kid.time}'),
+                      title: Text(kid.name, style: GoogleFonts.outfit(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),),
+                      subtitle: Text('${kid.status}\n${kid.time} ' , style: GoogleFonts.outfit(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),),
                       onTap: () => controller.selectKid(kid),
                     );
                   },
