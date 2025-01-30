@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Utils/utils.dart';
-import '../controllers/Message_controller.dart';
+import '../Controllers/Message_controller.dart';
 
 class InboxScreen extends StatelessWidget {
   final controller = Get.put(InboxController());

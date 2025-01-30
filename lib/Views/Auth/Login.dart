@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:piffers/Views/auth/ForgotPassworsd.dart';
-import 'package:piffers/Views/auth/SignUp.dart';
+import 'package:piffers/Views/Auth/ForgotPassworsd.dart';
+import 'package:piffers/Views/Auth/SignUp.dart';
 import 'package:piffers/Views/controllers/authcontroller.dart';
 import '../Utils/utils.dart';
 

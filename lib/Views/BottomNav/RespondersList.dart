@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/BottomNav/AddResponder.dart';
-import '../controllers/responder_controller.dart';
+import '../Controllers/responder_controller.dart';
 
 
 class ResponderListScreen extends StatefulWidget {

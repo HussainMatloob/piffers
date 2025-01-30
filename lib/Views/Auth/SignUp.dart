@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:piffers/Views/Utils/utils.dart';
-import 'package:piffers/Views/auth/Login.dart';
+import 'package:piffers/Views/Auth/Login.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/controllers/authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';

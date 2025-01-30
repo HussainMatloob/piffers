@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/Utils/utils.dart';
-import 'package:piffers/Views/auth/ResetPassword.dart';
-import 'package:piffers/Views/controllers/authcontroller.dart';
+import 'package:piffers/Views/Auth/ResetPassword.dart';
+import 'package:piffers/Views/Controllers/authcontroller.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class ForgotPassword extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:piffers/Views/controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/authcontroller.dart';
 import '../Utils/utils.dart';
 
 class ResetPassword extends StatefulWidget {

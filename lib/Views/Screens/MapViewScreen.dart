@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../Models/Place.dart';
-import '../controllers/places_controller.dart';
+import '../Controllers/places_controller.dart';
 import '../utils/utils.dart';
 
 class MapViewScreen extends StatefulWidget {

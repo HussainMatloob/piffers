@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../controllers/pet_trackting_controller.dart';
+import '../Controllers/pet_trackting_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PetTrackingScreen extends StatelessWidget {

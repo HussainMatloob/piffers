@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:piffers/Views/Api%20Services/apiservice.dart';
 import 'package:piffers/Views/BottomNav/Bottom_navbar.dart';
 import 'package:piffers/Views/Utils/utils.dart';
-import 'package:piffers/Views/auth/Login.dart';
+import 'package:piffers/Views/Auth/Login.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs; // Reactive loading state
