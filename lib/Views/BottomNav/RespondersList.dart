@@ -20,6 +20,8 @@ class _ResponderListScreenState extends State<ResponderListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    responderController.fetchResponders();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Responders'),

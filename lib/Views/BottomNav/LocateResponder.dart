@@ -548,6 +548,7 @@ class _LocateResponderState extends State<LocateResponder> {
                                         style: GoogleFonts.inknutAntiqua(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w300,
+                                          color: Colors.black,
                                         )),
                                     const Text("At Office", style: TextStyle(fontSize: 12, color: Colors.black),),
                                     const Text("Since 6:00 am", style: TextStyle(fontSize: 12, color: Colors.black),)

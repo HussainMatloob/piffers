@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Controllers/notification_controller.dart';
 import '../Screens/OpenMap.dart';
+import '../Utils/utils.dart';
 
 
 class FirebaseMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final NotificationController notificationController = Get.put(NotificationController());
+  String? fullName;
+
 
   // Initialize the local notifications plugin
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -19,7 +22,6 @@ class FirebaseMessagingService {
       badge: true,
       sound: true,
     );
-
     // Initialize the local notifications plugin
     const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(android: androidInitializationSettings);

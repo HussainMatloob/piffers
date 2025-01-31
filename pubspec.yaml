@@ -60,7 +60,7 @@ dev_dependencies:
   path_provider: ^2.0.11
   url_launcher: ^6.1.10
   geolocator: ^10.0.0
-  geocoding: ^2.0.0
+  geocoding: ^3.0.0
   permission_handler: ^11.1.0
   google_maps_flutter: ^2.10.0
   location: ^8.0.0
@@ -70,7 +70,6 @@ dev_dependencies:
   firebase_messaging: ^15.2.1
   badges: ^3.1.2
   flutter_local_notifications: ^18.0.1
-
 
 
 

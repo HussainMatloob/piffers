@@ -28,7 +28,7 @@ class _AddresponderState extends State<Addresponder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('Add Responder'),

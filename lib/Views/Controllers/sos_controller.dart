@@ -6,6 +6,9 @@ import 'package:geolocator/geolocator.dart';
 import '../Api Services/apiservice.dart';
 import 'package:http/http.dart' as http;
 
+import '../Utils/utils.dart';
+import 'package:geocoding/geocoding.dart';
+
 class SOSController extends GetxController {
   final ApiService apiService = ApiService();
 
@@ -83,10 +86,19 @@ class SOSController extends GetxController {
       Position? position = await getCurrentLocation();
       if (position == null) {
         responseMessage.value = 'Unable to get location.';
+
+        // get the location exact location name from position
+        // final exactLocation = position.what ....
+
         return;
       }
+// Get the exact location name from latitude and longitude
+      String exactLocationName = await getExactLocationName(position.latitude, position.longitude);
+      final fullName = await Utils.getString("name");
 
-      String message = 'I need immediate help! My location is ${position.latitude}, ${position.longitude}.';
+      String message = '$fullName Needs Immediate Help! My location is: $exactLocationName.';
+      print('Sending help request with message: $message');
+      await _sendNotificationToResponders(position.latitude, position.longitude);
 
       final response = await apiService.requestHelp(
         message: message,
@@ -121,6 +133,24 @@ class SOSController extends GetxController {
       );
     } finally {
       isLoading.value = false;
+    }
+  }
+
+
+  Future<String> getExactLocationName(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        String locationName = "${place.name}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+        print("Exact location: $locationName");
+        return locationName;
+      } else {
+        return "Unknown location";
+      }
+    } catch (e) {
+      print("Error getting location name: $e");
+      return "Error retrieving location";
     }
   }
 
