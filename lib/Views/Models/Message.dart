@@ -8,6 +8,5 @@ class Message {
       {required this.name,
       required this.message,
       required this.timestamp,
-
       this.unread = false});
 }

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import '../Api Services/apiservice.dart';
+import 'package:http/http.dart' as http;
 
 class SOSController extends GetxController {
   final ApiService apiService = ApiService();
@@ -32,6 +35,7 @@ class SOSController extends GetxController {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+
         if (permission == LocationPermission.denied) {
           Get.snackbar(
             'Error',
@@ -89,7 +93,7 @@ class SOSController extends GetxController {
         latitude: position.latitude,
         longitude: position.longitude,
       );
-
+      await _sendNotificationToResponders(position.latitude, position.longitude);
 
       responseMessage.value = response['message'];
       Get.snackbar(
@@ -99,6 +103,8 @@ class SOSController extends GetxController {
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
+
+      // Send notification to responders
 
       // Close the screen after showing success
       Future.delayed(const Duration(seconds: 2), () {
@@ -117,6 +123,30 @@ class SOSController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<bool> _sendNotificationToResponders(double latitude, double longitude) async {
+    const String backendEndpoint = 'https://sos.piffers.net/public/api/sendNotification';
+
+    final response = await http.post(
+      Uri.parse(backendEndpoint),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'latitude': latitude,
+        'longitude': longitude,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Notification request sent successfully to the backend');
+      return true;
+    } else {
+      print('Failed to send request: ${response.statusCode}');
+      return false;
+    }
+  }
+
 
   /// Starts the timer for SOS
   void startTimer() {

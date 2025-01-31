@@ -67,6 +67,12 @@ dev_dependencies:
   firebase_core: ^3.10.1
   firebase_auth: ^5.4.1
   cloud_firestore: ^5.6.2
+  firebase_messaging: ^15.2.1
+  badges: ^3.1.2
+  flutter_local_notifications: ^18.0.1
+
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

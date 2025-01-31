@@ -15,12 +15,14 @@ import 'package:piffers/Views/controllers/pdfcontroller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import '../Controllers/notification_controller.dart';
 import '../Screens/NewPlaceScreen.dart';
+import '../Screens/NotificationListScreen.dart';
 import '../Screens/UserProfile.dart';
 import '../Widgets/eye_container.dart';
 import '../controllers/places_controller.dart';
 import 'AddResponder.dart';
+import 'package:badges/badges.dart' as badges;
 
 class LocateResponder extends StatefulWidget {
   @override
@@ -35,6 +37,7 @@ class _LocateResponderState extends State<LocateResponder> {
   final UIController uiController = Get.put(UIController());
   final PdfController pdfController =
       Get.put(PdfController()); // Create an instance of PdfController
+  final NotificationController controller = Get.put(NotificationController());
 
   String _fullName = "";
 
@@ -238,14 +241,12 @@ class _LocateResponderState extends State<LocateResponder> {
       // If full name is found, return it
       return fullName;
     } else {
-
       return fullName!.isEmpty ? "Armughan Tallat Khan" : fullName;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -258,19 +259,22 @@ class _LocateResponderState extends State<LocateResponder> {
               fontWeight: FontWeight.bold,
             ),
           )),
-          actions: [
-            IconButton(
-              icon: Image.asset('assets/png/logo1.png'),
-              onPressed: () {
-                // Handle notification action
-              },
-            ),
-            IconButton(
-              icon: Image.asset('assets/png/logo2.png'),
-              onPressed: () {
-                // Handle settings action
-              },
-            ),
+          actions:[
+            Obx(() => badges.Badge(
+              badgeContent: Text(
+                controller.notificationCount.value.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),
+              showBadge: controller.notificationList.length > 0,
+              child: IconButton(
+                icon: const Icon(Icons.notifications,size: 30,),
+                onPressed: () {
+                  // Navigate to Notification Screen
+                 Get.to(NotificationListScreen());
+
+                },
+              ),
+            )),
           ],
         ),
         drawer: Drawer(
