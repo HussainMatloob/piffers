@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Controllers/notification_controller.dart';
 import '../Screens/OpenMap.dart';
 import '../Utils/utils.dart';
+import 'package:google_maps_url_extractor/google_maps_url_extractor.dart';
 
 
 class FirebaseMessagingService {
@@ -30,7 +31,7 @@ class FirebaseMessagingService {
     // Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage: $message");
-      _showNotification(message);
+      // _showNotification(message);
       notificationController.incrementNotification( message);
     });
 
@@ -49,12 +50,16 @@ class FirebaseMessagingService {
     print("Handling a background message: ${message.messageId}");
 
     // Add notification to the list when the app is in background or terminated
-    final NotificationController notificationController = Get.find();
+     NotificationController notificationController = Get.find();
     notificationController.addNotification({
       'title': message.notification?.title ?? 'New Request',
       'body': message.notification?.body ?? 'You have a new help request',
       'location': message.data['location'] ?? 'No location provided',
     });
+    print( 'Notification title: ${message.notification?.title }');
+    print( 'Notification Body: ${message.notification?.body}');
+    print( 'Notification Body: ${message.data['location']}');
+
 
     // Show local notification for background messages
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -90,18 +95,38 @@ class FirebaseMessagingService {
   }
 
   // Handle notification click (navigate to the map screen)
-  void _handleNotification(RemoteMessage message) {
-    final location = message.data['location'];
+  void _handleNotification(RemoteMessage message) async {
+    final latitude = message.data['latitude'];
+    final longitude = message.data['longitude'];
 
-    // Navigate to the location screen (Map view) when clicked
-    Get.to(() => LocationMapScreen(location: location));
+    print('Latitude: $latitude, Longitude: $longitude');
+    // Convert latitude and longitude to double if they are Strings
+    double latitudeDouble = 0.0;  // Default value
+    double longitudeDouble = 0.0; // Default value
+
+    if (latitude is String) {
+      latitudeDouble = double.tryParse(latitude) ?? 0.0; // Default to 0.0 if invalid
+    } else if (latitude is num) {
+      latitudeDouble = latitude.toDouble();
+    }
+
+    if (longitude is String) {
+      longitudeDouble = double.tryParse(longitude) ?? 0.0; // Default to 0.0 if invalid
+    } else if (longitude is num) {
+      longitudeDouble = longitude.toDouble();
+    }
+
+    // Now we are sure latitudeDouble and longitudeDouble are valid doubles
+    Get.to(() => LocationMapScreen(latitude: latitudeDouble, longitude: longitudeDouble));
+
   }
+
 
   // This function is called when a notification is tapped
   Future<void> _onSelectNotification(String? payload) async {
     if (payload != null) {
       // Navigate to the map screen with location details from payload
-      Get.to(() => LocationMapScreen(location: payload));
+      // Get.to(() => LocationMapScreen(location: payload));
     }
   }
 }

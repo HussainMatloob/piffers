@@ -528,6 +528,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.10"
+  google_maps_url_extractor:
+    dependency: "direct dev"
+    description:
+      name: google_maps_url_extractor
+      sha256: cdce413fc6a6b7748ecb8abde123624cbd60cdc96e6cb0905870dfdfdbe0e33c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   html:
     dependency: transitive
     description:

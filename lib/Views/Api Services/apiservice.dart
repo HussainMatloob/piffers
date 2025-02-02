@@ -102,6 +102,7 @@ class ApiService {
     required String message,
     required double latitude,
     required double longitude,
+    required String  location,
   }) async {
     String? token = await Utils.getString('token');
 
@@ -116,6 +117,7 @@ class ApiService {
     };
 
     final body = jsonEncode({
+      'location': location,
       'message': message,
       'latitude': latitude,
       'longitude': longitude,

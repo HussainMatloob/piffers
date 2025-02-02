@@ -70,7 +70,7 @@ dev_dependencies:
   firebase_messaging: ^15.2.1
   badges: ^3.1.2
   flutter_local_notifications: ^18.0.1
-
+  google_maps_url_extractor: ^1.0.2
 
 
 # For information on the generic Dart part of this file, see the

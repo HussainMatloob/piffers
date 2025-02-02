@@ -86,26 +86,23 @@ class SOSController extends GetxController {
       Position? position = await getCurrentLocation();
       if (position == null) {
         responseMessage.value = 'Unable to get location.';
-
-        // get the location exact location name from position
-        // final exactLocation = position.what ....
-
+        isLoading.value = false;
         return;
       }
 // Get the exact location name from latitude and longitude
       String exactLocationName = await getExactLocationName(position.latitude, position.longitude);
       final fullName = await Utils.getString("name");
 
-      String message = '$fullName Needs Immediate Help! My location is: $exactLocationName.';
+      String message = '$fullName Needs Immediate Help! My location is: $exactLocationName${''}.';
       print('Sending help request with message: $message');
-      await _sendNotificationToResponders(position.latitude, position.longitude);
+      // await _sendNotificationToResponders(position.latitude, position.longitude);
 
       final response = await apiService.requestHelp(
+        location: exactLocationName,
         message: message,
         latitude: position.latitude,
         longitude: position.longitude,
       );
-      await _sendNotificationToResponders(position.latitude, position.longitude);
 
       responseMessage.value = response['message'];
       Get.snackbar(
@@ -116,7 +113,6 @@ class SOSController extends GetxController {
         colorText: Colors.white,
       );
 
-      // Send notification to responders
 
       // Close the screen after showing success
       Future.delayed(const Duration(seconds: 2), () {
@@ -156,11 +152,14 @@ class SOSController extends GetxController {
 
   Future<bool> _sendNotificationToResponders(double latitude, double longitude) async {
     const String backendEndpoint = 'https://sos.piffers.net/public/api/sendNotification';
+    String? token = await Utils.getString('token'); // Fetch the token using your method
 
+    print(" ++++++++++++++++++++  TOKEN IS : ${token.toString()} ++++++++++++++++++++++++++++++");
     final response = await http.post(
       Uri.parse(backendEndpoint),
       headers: <String, String>{
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode({
         'latitude': latitude,
@@ -172,7 +171,9 @@ class SOSController extends GetxController {
       print('Notification request sent successfully to the backend');
       return true;
     } else {
+
       print('Failed to send request: ${response.statusCode}');
+      print('Response bdoy: ${response.body}');
       return false;
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Controllers/notification_controller.dart';
 import 'OpenMap.dart';
+import 'package:google_maps_url_extractor/google_maps_url_extractor.dart';
 
 class NotificationListScreen extends StatelessWidget {
   final NotificationController notificationController = Get.find();
@@ -25,6 +26,7 @@ class NotificationListScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final notification = notificationController.notifications[index];
 
+            print('Notification data: ${notification.data}');
             return Card(
               elevation: 3,
               margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -38,23 +40,34 @@ class NotificationListScreen extends StatelessWidget {
                   notification.notification?.body ?? 'Emergency reported',
                 ),
                 trailing: ElevatedButton(
-                  onPressed: () {
-                    String location = notification.data['location'] ?? '';
-                    if (location.isNotEmpty) {
-                      final coordinates = location.split(',');
-                      if (coordinates.length == 2) {
-                        double latitude = double.parse(coordinates[0]);
-                        double longitude = double.parse(coordinates[1]);
+                  onPressed: () async {
+                    final latitude = notification.data['latitude'];
+                    final longitude = notification.data['longitude'];
 
-                        // Navigate to LocationMapScreen
-                        Get.to(() => LocationMapScreen(
-                          location: '$latitude,$longitude',
-                        ));
-                      }
-                    } else {
-                      Get.snackbar('Error', 'Location not available for this notification');
+                    print('Latitude: $latitude, Longitude: $longitude');
+                    // Convert latitude and longitude to double if they are Strings
+                    double latitudeDouble = 0.0;  // Default value
+                    double longitudeDouble = 0.0; // Default value
+
+                    if (latitude is String) {
+                      latitudeDouble = double.tryParse(latitude) ?? 0.0; // Default to 0.0 if invalid
+                    } else if (latitude is num) {
+                      latitudeDouble = latitude.toDouble();
                     }
+
+                    if (longitude is String) {
+                      longitudeDouble = double.tryParse(longitude) ?? 0.0; // Default to 0.0 if invalid
+                    } else if (longitude is num) {
+                      longitudeDouble = longitude.toDouble();
+                    }
+
+                    // Now we are sure latitudeDouble and longitudeDouble are valid doubles
+                    Get.to(() => LocationMapScreen(latitude: latitudeDouble, longitude: longitudeDouble));
                   },
+
+
+
+
                   child: const Text('Navigate'),
                 ),
               ),
