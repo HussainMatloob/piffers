@@ -60,14 +60,9 @@ class NotificationListScreen extends StatelessWidget {
                     } else if (longitude is num) {
                       longitudeDouble = longitude.toDouble();
                     }
-
                     // Now we are sure latitudeDouble and longitudeDouble are valid doubles
                     Get.to(() => LocationMapScreen(latitude: latitudeDouble, longitude: longitudeDouble));
                   },
-
-
-
-
                   child: const Text('Navigate'),
                 ),
               ),

@@ -1,55 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../Controllers/location_controller.dart';
 
-class LocationMapScreen extends StatefulWidget {
+class LocationMapScreen extends StatelessWidget {
   final double latitude;
   final double longitude;
 
   const LocationMapScreen({required this.latitude, required this.longitude});
 
   @override
-  _LocationMapScreenState createState() => _LocationMapScreenState();
-}
-
-class _LocationMapScreenState extends State<LocationMapScreen> {
-  late GoogleMapController mapController;
-  late LatLng _locationCoordinates;
-
-  @override
-  void initState() {
-    super.initState();
-    _locationCoordinates = LatLng(widget.latitude, widget.longitude);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final LocationController locationController = Get.put(LocationController());
+
+    // Static initial coordinates for testing (Islamabad, for example)
+    final LatLng staticInitialLocation = LatLng(33.6844, 73.0479);
+    final LatLng targetLocation = LatLng(latitude, longitude);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      locationController.setLocations(staticInitialLocation, targetLocation);
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Location for Help Request'),
       ),
-      body: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: _locationCoordinates,
-          zoom: 15.0,
-        ),
-        markers: {
-          Marker(
-            markerId: const MarkerId('helpRequest'),
-            position: _locationCoordinates,
-            infoWindow: const InfoWindow(title: 'Help Requested'),
+      body: Obx(() {
+        return GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: staticInitialLocation,
+            zoom: 15.0,
           ),
-        },
-        onMapCreated: (GoogleMapController controller) {
-          mapController = controller;
-        },
-      ),
+          markers: locationController.markers,
+          polylines: locationController.routePolyline.value != null
+              ? {locationController.routePolyline.value!}
+              : {},
+          onMapCreated: locationController.onMapCreated,
+        );
+      }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          mapController.animateCamera(
-            CameraUpdate.newLatLngZoom(_locationCoordinates, 16.0),
-          );
-        },
-        child: const Icon(Icons.directions),
+        onPressed: locationController.zoomToTargetLocation,
+        child: const Icon(Icons.zoom_in),
       ),
     );
   }

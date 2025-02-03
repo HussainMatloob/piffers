@@ -4,15 +4,11 @@ import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Controllers/notification_controller.dart';
 import '../Screens/OpenMap.dart';
-import '../Utils/utils.dart';
-import 'package:google_maps_url_extractor/google_maps_url_extractor.dart';
-
 
 class FirebaseMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final NotificationController notificationController = Get.put(NotificationController());
   String? fullName;
-
 
   // Initialize the local notifications plugin
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -23,21 +19,24 @@ class FirebaseMessagingService {
       badge: true,
       sound: true,
     );
+
     // Initialize the local notifications plugin
     const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(android: androidInitializationSettings);
-    // await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: _onSelectNotification);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings, );
 
     // Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage: $message");
+      _logNotificationData(message); // Log notification data
       // _showNotification(message);
-      notificationController.incrementNotification( message);
+      notificationController.incrementNotification(message);
     });
 
     // App opened from background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("onMessageOpenedApp: $message");
+      _logNotificationData(message); // Log notification data
       _handleNotification(message);
     });
 
@@ -48,18 +47,15 @@ class FirebaseMessagingService {
   // Background message handler
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print("Handling a background message: ${message.messageId}");
+    _logNotificationData(message); // Log notification data
 
     // Add notification to the list when the app is in background or terminated
-     NotificationController notificationController = Get.find();
+    NotificationController notificationController = Get.find();
     notificationController.addNotification({
       'title': message.notification?.title ?? 'New Request',
       'body': message.notification?.body ?? 'You have a new help request',
       'location': message.data['location'] ?? 'No location provided',
     });
-    print( 'Notification title: ${message.notification?.title }');
-    print( 'Notification Body: ${message.notification?.body}');
-    print( 'Notification Body: ${message.data['location']}');
-
 
     // Show local notification for background messages
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -100,6 +96,7 @@ class FirebaseMessagingService {
     final longitude = message.data['longitude'];
 
     print('Latitude: $latitude, Longitude: $longitude');
+
     // Convert latitude and longitude to double if they are Strings
     double latitudeDouble = 0.0;  // Default value
     double longitudeDouble = 0.0; // Default value
@@ -118,15 +115,18 @@ class FirebaseMessagingService {
 
     // Now we are sure latitudeDouble and longitudeDouble are valid doubles
     Get.to(() => LocationMapScreen(latitude: latitudeDouble, longitude: longitudeDouble));
-
   }
 
 
-  // This function is called when a notification is tapped
-  Future<void> _onSelectNotification(String? payload) async {
-    if (payload != null) {
-      // Navigate to the map screen with location details from payload
-      // Get.to(() => LocationMapScreen(location: payload));
-    }
+
+
+  // Helper function to log notification data
+  static void _logNotificationData(RemoteMessage message) {
+    print('Notification Data:');
+    print('Title: ${message.notification?.title}');
+    print('Body: ${message.notification?.body}');
+    print('Data: ${message.data}');
+    print('Latitude: ${message.data['latitude']}');
+    print('Longitude: ${message.data['longitude']}');
   }
 }
