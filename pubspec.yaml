@@ -71,7 +71,7 @@ dev_dependencies:
   badges: ^3.1.2
   flutter_local_notifications: ^18.0.1
   google_maps_url_extractor: ^1.0.2
-
+  flutter_polyline_points: ^2.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

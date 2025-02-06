@@ -954,6 +954,11 @@ class _LocateResponderState extends State<LocateResponder> {
         // Step 2: Construct Google Maps URL with user's coordinates
         final String lat = position.latitude.toString();
         final String lng = position.longitude.toString();
+
+        Utils.saveString("latitue", lat);
+        Utils.saveString("longitude", lng);
+
+
         final Uri googleMapsUrl = Uri.parse(
           "https://www.google.com/maps/search/?api=1&query=$lat,$lng",
         );
