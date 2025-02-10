@@ -16,13 +16,12 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA5JSwFeIXvBdJGz1DobE76xhUEw3LYL7Y"
-            />
+            android:value="AIzaSyA5JSwFeIXvBdJGz1DobE76xhUEw3LYL7Y" />
 
+        <!-- API Key for Google Directions API (Custom Key) -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
-
+            android:name="com.google.android.maps.DIRECTIONS_API_KEY"
+            android:value="FGCwTz-_43hxdE9hme9egmDTrbk=" />
 
         <activity
             android:name=".MainActivity"

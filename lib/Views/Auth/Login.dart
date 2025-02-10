@@ -55,7 +55,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-
             // "Sign In" Text
             Positioned(
               top: 120,

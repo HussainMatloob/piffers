@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:piffers/Views/controllers/authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'VarifyOTPScreen.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -13,15 +15,14 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  final AuthController authController = Get.put(AuthController());
 
+  final AuthController authController = Get.put(AuthController());
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -69,107 +70,104 @@ class _SignupState extends State<Signup> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 180),
-                    // Adjust height for the space left by the "Sign Up" text
 
-                    // First Name TextField
                     Utils().buildTextField('First Name', _firstNameController),
 
-                    // Last Name TextField
                     Utils().buildTextField('Last Name', _lastNameController),
 
-                    // Email TextField
                     Utils().buildTextField(
                         'Email', _emailController, TextInputType.emailAddress),
 
                     Utils().buildTextField(
                         'Phone Number', _phoneController, TextInputType.number),
 
-                    // Utils().buildPhoneNumberField(
-                    //   'Phone Number',
-                    //   _phoneController,
-                    //       (countryCode) {
-                    //     selectedCountryCode = countryCode;
-                    //     print('Selected Country Code: $selectedCountryCode');
-                    //   },
-                    // ),
-
-                    // Password TextField
                     Utils().buildTextField(
                       'Password',
                       _passwordController,
                     ),
 
-                    // Confirm Password TextField
                     Utils().buildTextField(
                       'Confirm Password',
                       _confirmPasswordController,
                     ),
                     SizedBox(height: 20),
 
-                    // SignUp Button
                     SizedBox(
                       width: double.infinity,
                       child: Center(
                         child: Obx(() {
-                          print(
-                              "Checking isLoading: ${authController.isLoading.value}");
+                          print("Checking isLoading: ${authController.isLoading.value}");
 
-                          if (authController == null ||
-                              authController.isLoading == null) {
-                            return const CircularProgressIndicator(); // Show loader if authController or isLoading is null
+                          if (authController.isLoading.value) {
+                            return const CircularProgressIndicator();
                           }
 
-                          return authController.isLoading.value
-                              ? const CircularProgressIndicator() // Show loader while signing up
-                              : ElevatedButton(
-                                  onPressed: () {
-                                    if (_firstNameController.text.isNotEmpty &&
-                                        _lastNameController.text.isNotEmpty &&
-                                        _emailController.text.isNotEmpty &&
-                                        _passwordController.text.isNotEmpty &&
-                                        _confirmPasswordController
-                                            .text.isNotEmpty) {
-                                      print("Form validated successfully.");
+                          return ElevatedButton(
+                            onPressed: () async {
+                              // Trim all input fields to avoid spaces issues
+                              String firstName = _firstNameController.text.trim();
+                              String lastName = _lastNameController.text.trim();
+                              String email = _emailController.text.trim();
+                              String password = _passwordController.text.trim();
+                              String confirmPassword = _confirmPasswordController.text.trim();
 
-                                      // Perform sign up action, for example, store the data or call an API
-                                      print("Calling authController.register");
-                                      authController.register(
-                                        _firstNameController.text ?? "",
-                                        _lastNameController.text ?? "",
-                                        _emailController.text ?? "",
-                                        _passwordController.text ?? "",
-
-                                        // '$_selectedCountryCode${_phoneNumberController.text.trim()
-                                      );
-
-                                      // Utils.saveString("name",
-                                      //     "${_firstNameController.text ?? ""} ${_lastNameController.text ?? ""}");
-                                      print("User registered successfully.");
-                                    } else {
-
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromRGBO(124, 2, 16, 1.0),
-                                    // Set the custom RGB color for the button
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 100, vertical: 15),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Sign Up',
-                                    style: GoogleFonts.nunitoSans(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
+                              // Validate required fields
+                              if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+                                Get.snackbar(
+                                  'Error',
+                                  'All fields are required.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
                                 );
+                                return;
+                              }
+
+                              // Validate password confirmation
+                              if (password != confirmPassword) {
+                                Get.snackbar(
+                                  'Error',
+                                  'Passwords do not match.',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                                return;
+                              }
+
+                              print("Form validated successfully. Registering user...");
+
+                              // Call the register function
+                              await authController.register(
+                                firstName,
+                                lastName,
+                                email,
+                                password,
+                              );
+
+                              // Save email for OTP verification
+                              Utils.saveString("email", email);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(124, 2, 16, 1.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Text(
+                              'Sign Up',
+                              style: GoogleFonts.nunitoSans(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
                         }),
                       ),
                     ),
+
 
                     SizedBox(height: 30),
 

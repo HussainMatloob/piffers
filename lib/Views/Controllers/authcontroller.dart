@@ -1,19 +1,24 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/Api%20Services/apiservice.dart';
 import 'package:piffers/Views/BottomNav/Bottom_navbar.dart';
 import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/Auth/Login.dart';
 
+import '../Auth/VarifyOTPScreen.dart';
+
 class AuthController extends GetxController {
   var isLoading = false.obs; // Reactive loading state
-  var token = ''.obs;        // Reactive token state
+  var token = ''.obs; // Reactive token state
+  var email1 = ''.obs; // Reactive token state
 
   // Register User
   Future<void> register(String firstName, String lastName, String email, String password) async {
     try {
-      isLoading(true);
+      isLoading.value = true; // Start loading
+
       final response = await ApiService.registerUser({
         'first_name': firstName,
         'last_name': lastName,
@@ -21,18 +26,49 @@ class AuthController extends GetxController {
         'password': password,
         'password_confirmation': password,
       });
-      token.value = response['token'];
-      Utils.saveString("token",  response['token']);
-      Utils.saveString("firstname",  firstName);
-      Utils.saveString("lastname",  lastName);
-      Get.snackbar('Success', 'Registration successful!',snackPosition: SnackPosition.BOTTOM);
-      Get.to(const Login());
+
+      if (response == null) {
+        throw Exception("Null response from server.");
+      }
+
+      if (response is! Map) {
+        throw Exception("Invalid response format. Expected JSON but got something else.");
+      }
+
+      // ✅ Check if status is "success"
+      if (response.containsKey("status") && response["status"] == "success") {
+        String message = response["message"] ?? "Registration successful";
+
+        Get.snackbar(
+          'Success',
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        // ✅ Extract OTP and email from response and pass to VerifyOtp screen
+        String email = response["data"]["email"];
+        int otp = response["data"]["otp"];
+
+        Get.to(() => VerifyOtp()); // Pass OTP to VerifyOtp screen
+      } else {
+        throw Exception(response["message"] ?? "Unknown error occurred.");
+      }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      print("Error: $e");
     } finally {
-      isLoading(false);
+      isLoading.value = false; // Stop loading
     }
   }
+
 
   // Login User
   Future<void> login(String email, String password) async {
@@ -55,16 +91,15 @@ class AuthController extends GetxController {
       Utils.saveString("last_name", response['user']['last_name']);
 
       printToken();
-      print( " First Name : ${response['user']['first_name']}");
-      print( " Last Name : ${response['user']['last_name']}");
+      print(" First Name : ${response['user']['first_name']}");
+      print(" Last Name : ${response['user']['last_name']}");
 
-      Utils.saveString(
-          "name",
-          "${response['user']['first_name'] ?? ""} ${response['user']['last_name'] ?? ""}"
-      );
+      Utils.saveString("name",
+          "${response['user']['first_name'] ?? ""} ${response['user']['last_name'] ?? ""}");
 
       // Show success message
-      Get.snackbar('Success', response['message'] ?? 'Login successful!', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Success', response['message'] ?? 'Login successful!',
+          snackPosition: SnackPosition.BOTTOM);
 
       // Navigate to home screen
       Get.offAll(BottomNavbar());
@@ -72,18 +107,16 @@ class AuthController extends GetxController {
       // Show error message
       Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
       print("Login Response : ${e.toString()}");
-
     } finally {
       isLoading(false);
     }
   }
 
-
   // Logout User
-  Future<void> logout()  async {
+  Future<void> logout() async {
     try {
       isLoading(true);
-      Future<String?> token1=  Utils.getString("token");
+      Future<String?> token1 = Utils.getString("token");
       await ApiService.logoutUser(token1.toString());
 
       Utils.saveString("token", '');
@@ -98,31 +131,30 @@ class AuthController extends GetxController {
   }
 
   // Method to send OTP New
-  Future<void> sendOtp( String email) async {
+  Future<void> sendOtp(String email) async {
     try {
       await ApiService.sendOtp(email);
-      Get.snackbar('Success', 'OTP sends succesfuly to ${email}',snackPosition: SnackPosition.BOTTOM);
-
+      Get.snackbar('Success', 'OTP sends succesfuly to ${email}',
+          snackPosition: SnackPosition.BOTTOM);
     } catch (error) {
       Get.snackbar('Error', error.toString());
-
     }
   }
 
   // Method to reset password
   Future<void> resetPassword(
-      String email,
-      String otp,
-      String password,
-      String confirmPassword,
-      ) async {
+    String email,
+    String otp,
+    String password,
+    String confirmPassword,
+  ) async {
     try {
       await ApiService.resetPassword(email, otp, password, confirmPassword);
-      Get.snackbar('Success', 'Password reset successfully',snackPosition: SnackPosition.BOTTOM);
-
+      Get.snackbar('Success', 'Password reset successfully',
+          snackPosition: SnackPosition.BOTTOM);
     } catch (error) {
-      Get.snackbar('Error', error.toString(),snackPosition: SnackPosition.BOTTOM);
-
+      Get.snackbar('Error', error.toString(),
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -131,14 +163,14 @@ class AuthController extends GetxController {
     try {
       isLoading(true);
       await ApiService.sendResetPasswordEmail(email);
-      Get.snackbar('Success', 'Password reset email sent!',snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Success', 'Password reset email sent!',
+          snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
     }
   }
-
 
   // Reset Password
   Future<void> addResponder({
@@ -223,6 +255,4 @@ class AuthController extends GetxController {
     String? token = await Utils.getString("token");
     print("Token:======================== $token");
   }
-
-
 }

@@ -1,28 +1,57 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:piffers/Views/Controllers/authcontroller.dart';
 import 'package:piffers/Views/Utils/utils.dart';
+import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "https://sos.piffers.net/public";
+  static const String baseUrl = "https://sos.piffers.net/";
 
+  final AuthController authController = AuthController();
   // Register API
-  static Future<Map<String, dynamic>> registerUser(
-      Map<String, dynamic> data) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/api/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(data),
-    );
-    return _processResponse(response);
+
+  static Future<Map<String, dynamic>> registerUser(Map<String, dynamic> data) async {
+    try {
+      final response = await http.post(
+        Uri.parse("https://sos.piffers.net/api/register"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      // Check for redirects
+      if (response.statusCode == 302 || response.statusCode == 301) {
+        throw Exception("Unexpected redirect. Check API URL.");
+      }
+
+      if (response.statusCode != 200) {
+        throw Exception("Error: ${response.statusCode} - ${response.body}");
+      }
+
+      final jsonResponse = jsonDecode(response.body);
+
+      if (jsonResponse is! Map<String, dynamic>) {
+        throw Exception("Invalid response format. Expected JSON object.");
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      print("API Error: $e");
+      return {"success": false, "message": e.toString()};
+    }
   }
 
+
   // Login API
-  static Future<Map<String, dynamic>> loginUser(
+  static Future<Map> loginUser(
       Map<String, dynamic> data) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/login'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Accept': 'application/json'},
       body: jsonEncode(data),
     );
     return _processResponse(response);
@@ -226,13 +255,67 @@ class ApiService {
     }
   }
 
+  Future<Map<String, dynamic>> verifyOtp(String otp) async {
+    final url = Uri.parse("$baseUrl/api/verify-otp");
+
+    // get the email from auth controller
+    String email = authController.email1.value.toString();
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "otp": otp,
+          "email": email,
+        }),
+      );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      return responseData;
+    } catch (e) {
+      return {"message": "Something went wrong", "status": "error"};
+    }
+  }
+
+  Future<Map<String, dynamic>> resendOtp(String email) async {
+    final url = Uri.parse("$baseUrl/api/resend-otp");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "email": email,
+        }),
+      );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      return responseData;
+    } catch (e) {
+      return {"message": "Something went wrong", "status": "error"};
+    }
+  }
+
 
   // Private helper to process responses
-  static Map<String, dynamic> _processResponse(http.Response response) {
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body);
-    } else {
+  static Map _processResponse(http.Response response) {
+    try {
+      final jsonResponse = jsonDecode(response.body);
+
+      if (jsonResponse is! Map) {
+        throw Exception("Invalid JSON response");
+      }
+
+      return jsonResponse;
+    } catch (e) {
+      print("Error processing response: ${response.body}");
       throw Exception("Error: ${response.body}");
     }
   }
+
 }
