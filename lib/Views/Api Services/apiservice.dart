@@ -193,7 +193,6 @@ class ApiService {
     }
   }
 
-
   // Add responder API
   static Future<void> addResponder({
     required String name,
