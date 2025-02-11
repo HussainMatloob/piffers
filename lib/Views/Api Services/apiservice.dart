@@ -7,7 +7,7 @@ import 'package:piffers/Views/Utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "https://sos.piffers.net/";
+  static const String baseUrl = "https://sos.piffers.net/api";
 
   final AuthController authController = AuthController();
   // Register API
@@ -29,6 +29,9 @@ class ApiService {
       }
 
       if (response.statusCode != 200) {
+
+        // print(response.statusCode);
+        // print("Api Response  Error:  ${response.body}");
         throw Exception("Error: ${response.statusCode} - ${response.body}");
       }
 
@@ -50,8 +53,11 @@ class ApiService {
   static Future<Map> loginUser(
       Map<String, dynamic> data) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/login'),
-      headers: {'Accept': 'application/json'},
+      Uri.parse('$baseUrl/login'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: jsonEncode(data),
     );
     return _processResponse(response);
@@ -60,9 +66,10 @@ class ApiService {
   // Logout API
   static Future<void> logoutUser(String token) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/logout'),
+      Uri.parse('$baseUrl/logout'),
       headers: {
         'Content-Type': 'application/json',
+        'Accept':'application.json',
         'Authorization': 'Bearer $token',
       },
     );
@@ -73,9 +80,11 @@ class ApiService {
 // Send OTP API
   static Future<void> sendOtp(String email) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/password-reset-otp'),
+      Uri.parse('$baseUrl/password-reset-otp'),
       headers: {
         'Accept': 'application/json',
+        'Content-Type': 'application/json',
+
       },
       body: jsonEncode({'email': email}),
     );
@@ -96,6 +105,9 @@ class ApiService {
       Uri.parse('$baseUrl/reset-password'),
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+
+
       },
       body: jsonEncode({
         'email': email,
@@ -113,7 +125,11 @@ class ApiService {
   static Future<void> sendResetPasswordEmail(String email) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/api/password-reset-otp'),
+        Uri.parse('$baseUrl/password-reset-otp'),
+        headers: {        'Content-Type': 'application/json',
+          'Accept': 'application/json',
+
+        },
         body: jsonEncode({'email': email}),
       );
       print(" +++++++++++++++++++ ${email.toString()}");
@@ -139,7 +155,7 @@ class ApiService {
       throw Exception('Token is null. Ensure the user is logged in.');
     }
 
-    final url = Uri.parse('$baseUrl/api/request-help');
+    final url = Uri.parse('$baseUrl/request-help');
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -190,7 +206,7 @@ class ApiService {
     required File responderImage,
   }) async {
     String? token = await Utils.getString('token'); // Fetch the token
-    final uri = Uri.parse('$baseUrl/api/store-responders');
+    final uri = Uri.parse('$baseUrl/store-responders');
 
     // Create multipart request
     var request = http.MultipartRequest('POST', uri);
@@ -239,7 +255,7 @@ class ApiService {
 
   static Future<List<dynamic>> getResponders(String token) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/api/responders'),
+      Uri.parse('$baseUrl/responders'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -255,17 +271,22 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> verifyOtp(String otp) async {
-    final url = Uri.parse("$baseUrl/api/verify-otp");
+  Future<Map<String, String>> verifyOtp(String otp) async {
+    final url = Uri.parse("$baseUrl/verify-otp");
 
-    // get the email from auth controller
-    String email = authController.email1.value.toString();
+    // Ensure email is not empty before making the request
+    String? email = await Utils.getString("email");
+    print(" Email is : $email");
+    if (email!.isEmpty) {
+      return {"message": "Email is missing", "status": "error"};
+    }
 
     try {
       final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: jsonEncode({
           "otp": otp,
@@ -273,21 +294,40 @@ class ApiService {
         }),
       );
 
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      return responseData;
+      print("Request URL: $url");
+      print("Response Status Code: ${response.statusCode}");
+      print("Full Response: ${response.body}");
+
+      if (response.statusCode == 200) {
+        // Decode response safely
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+        return {
+          "message": responseData["message"] ?? "No message",
+          "status": responseData["status"] ?? "error",
+        };
+      } else {
+        return {
+          "message": "OTP verification failed",
+          "status": "error"
+        };
+      }
     } catch (e) {
+      print("Error in verifyOtp: $e");
       return {"message": "Something went wrong", "status": "error"};
     }
   }
 
   Future<Map<String, dynamic>> resendOtp(String email) async {
-    final url = Uri.parse("$baseUrl/api/resend-otp");
+    final url = Uri.parse("$baseUrl/resend-otp");
 
     try {
       final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+
         },
         body: jsonEncode({
           "email": email,

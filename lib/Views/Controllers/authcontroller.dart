@@ -47,23 +47,16 @@ class AuthController extends GetxController {
           colorText: Colors.white,
         );
 
-        // ✅ Extract OTP and email from response and pass to VerifyOtp screen
         String email = response["data"]["email"];
         int otp = response["data"]["otp"];
 
-        Get.to(() => VerifyOtp()); // Pass OTP to VerifyOtp screen
+        Get.to(() => VerifyOtp());
       } else {
         throw Exception(response["message"] ?? "Unknown error occurred.");
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      print("Error: $e");
+
+      print("Error: ${e.toString()}");
     } finally {
       isLoading.value = false; // Stop loading
     }

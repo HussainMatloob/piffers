@@ -24,7 +24,7 @@ class OtpController extends GetxController {
         // Navigate to next screen if needed
         Get.to(const Login());
       } else {
-        Get.snackbar("Error", message.value,
+        Get.snackbar("Error : ", message.value,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
             colorText: Colors.white);
