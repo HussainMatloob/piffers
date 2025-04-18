@@ -1,0 +1,2 @@
+C:/Users/JIB/Downloads/MYWORK/Piffers/android/app/.cxx/RelWithDebInfo/3k703c54/x86/CMakeFiles/edit_cache.dir
+C:/Users/JIB/Downloads/MYWORK/Piffers/android/app/.cxx/RelWithDebInfo/3k703c54/x86/CMakeFiles/rebuild_cache.dir

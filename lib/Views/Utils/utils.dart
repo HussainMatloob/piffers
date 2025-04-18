@@ -26,42 +26,40 @@ class Utils {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                slide['image']!,
-                fit: BoxFit.fill,
-                height: screenHeight *
-                    0.35, // 35% of the screen height for the image
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              slide['image']!,
+              fit: BoxFit.fill,
+              height:
+                  screenHeight * 0.35, // 35% of the screen height for the image
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              slide['title']!,
+              style: GoogleFonts.nunitoSans(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
               ),
-              const SizedBox(height: 20.0),
-              Text(
-                slide['title']!,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: EdgeInsets.all(screenWidth * 0.07),
+              // 7% of the screen width for padding
+              child: Text(
+                slide['description']!,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.nunitoSans(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 10.0),
-              Padding(
-                padding: EdgeInsets.all(screenWidth * 0.07),
-                // 7% of the screen width for padding
-                child: Text(
-                  slide['description']!,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -84,18 +82,21 @@ class Utils {
             controller: controller,
             keyboardType: inputType ?? TextInputType.text,
             obscureText: obscureText,
-            style: const TextStyle(color: Colors.white), // Text color set to white
+            style:
+                const TextStyle(color: Colors.white), // Text color set to white
             decoration: InputDecoration(
               contentPadding:
-              const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(0),
               ),
               enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white), // Default border color
+                borderSide:
+                    BorderSide(color: Colors.white), // Default border color
               ),
               focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red, width: 2), // Focused border color
+                borderSide: BorderSide(
+                    color: Colors.red, width: 2), // Focused border color
               ),
               fillColor: Colors.transparent,
               filled: true,
@@ -112,13 +113,12 @@ class Utils {
     );
   }
 
-
   Widget buildPasswordField(
-      String labelText,
-      TextEditingController controller, {
-        IconData icon = Icons.lock,
-        Color borderColor = Colors.white,
-      }) {
+    String labelText,
+    TextEditingController controller, {
+    IconData icon = Icons.lock,
+    Color borderColor = Colors.white,
+  }) {
     return TextFormField(
       controller: controller,
       obscureText: true,
@@ -156,9 +156,6 @@ class Utils {
     );
   }
 
-
-
-
   Widget buildSearchField(TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -170,7 +167,6 @@ class Utils {
               const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15), // Circular border
-
           ),
           filled: true,
           fillColor: Colors.grey[200],

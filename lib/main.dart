@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +16,7 @@ import 'package:piffers/Views/Services/firebase_messaging_service.dart';
 import 'Views/Controllers/notification_controller.dart';
 import 'Views/Screens/NotificationListScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,27 +36,34 @@ void main() async {
 
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'PIFFERS SOS',
-      initialRoute: '/splash',
-      getPages: [
-        GetPage(name: '/splash', page: () => SplashScreen()),
-        GetPage(name: '/onboarding', page: () => OnboardingScreen()),
-        GetPage(name: '/signup', page: () => const Signup()),
-        GetPage(name: '/login', page: () => const Login()),
-        GetPage(name: '/forgotpassword', page: () => const ForgotPassword()),
-        GetPage(name: '/resetpassword', page: () => ResetPassword()),
-        GetPage(name: '/addresponder', page: () => Addresponder()),
-        GetPage(name: '/more', page: () => MoreScreen()),
-        GetPage(name: '/responderlist', page: () => ResponderListScreen()),
-        GetPage(name: '/notificationlist', page: () => NotificationListScreen()),
-      ],
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'PIFFERS SOS',
+        initialRoute: '/splash',
+        getPages: [
+          GetPage(name: '/splash', page: () => SplashScreen()),
+          GetPage(name: '/onboarding', page: () => OnboardingScreen()),
+          GetPage(name: '/signup', page: () => const Signup()),
+          GetPage(name: '/login', page: () => const Login()),
+          GetPage(name: '/forgotpassword', page: () => const ForgotPassword()),
+          GetPage(name: '/resetpassword', page: () => ResetPassword()),
+          GetPage(name: '/addresponder', page: () => Addresponder()),
+          GetPage(name: '/more', page: () => MoreScreen()),
+          GetPage(name: '/responderlist', page: () => ResponderListScreen()),
+          GetPage(
+              name: '/notificationlist', page: () => NotificationListScreen()),
+        ],
+      ),
     );
   }
 }

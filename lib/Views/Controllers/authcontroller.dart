@@ -15,7 +15,8 @@ class AuthController extends GetxController {
   var email1 = ''.obs; // Reactive token state
 
   // Register User
-  Future<void> register(String firstName, String lastName, String email, String password) async {
+  Future<void> register(
+      String firstName, String lastName, String email, String password) async {
     try {
       isLoading.value = true; // Start loading
 
@@ -32,7 +33,8 @@ class AuthController extends GetxController {
       }
 
       if (response is! Map) {
-        throw Exception("Invalid response format. Expected JSON but got something else.");
+        throw Exception(
+            "Invalid response format. Expected JSON but got something else.");
       }
 
       // ✅ Check if status is "success"
@@ -55,13 +57,11 @@ class AuthController extends GetxController {
         throw Exception(response["message"] ?? "Unknown error occurred.");
       }
     } catch (e) {
-
       print("Error: ${e.toString()}");
     } finally {
       isLoading.value = false; // Stop loading
     }
   }
-
 
   // Login User
   Future<void> login(String email, String password) async {

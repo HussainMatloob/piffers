@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/Utils/utils.dart'; // Add GetX for navigation.
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -16,19 +17,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       "title": "Emergency Response",
       "description":
-      "Emergency Response at Your Fingertips.Click the SOS button to alert responders and share your location.Stay safe, anywhere, anytime.",
+          "Emergency Response at Your Fingertips.Click the SOS button to alert responders and share your location.Stay safe, anywhere, anytime.",
       "image": 'assets/png/first.png',
     },
     {
       "title": "Keep Loved Ones Close",
       "description":
-      "Add family members, friends, or caregivers as responders.Receive alerts and track their location in real-time.",
+          "Add family members, friends, or caregivers as responders.Receive alerts and track their location in real-time.",
       "image": 'assets/png/second.png',
     },
-      {
-        "title": "Stay Safe, Stay Connected",
+    {
+      "title": "Stay Safe, Stay Connected",
       "description":
-      "With our SOS alarm app,you're never alone in an emergency.Add responders and keep loved ones safe.",
+          "With our SOS alarm app,you're never alone in an emergency.Add responders and keep loved ones safe.",
       "image": 'assets/png/third.png',
     },
   ];
@@ -51,7 +52,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return Utils().buildSlideContent(context,slides[index] );
+                  return Utils().buildSlideContent(context, slides[index]);
                 },
               ),
             ),
@@ -61,36 +62,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 slides.length,
-                    (index) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 300), // Smooth animation
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  height: 10.0,
-                  width: currentPage == index ? 20.0 : 10.0, // Wider width for selected
+                (index) => AnimatedContainer(
+                  duration:
+                      const Duration(milliseconds: 300), // Smooth animation
+                  margin: EdgeInsets.symmetric(horizontal: 5.w),
+                  height: 10.h,
+                  width: currentPage == index
+                      ? 20.0
+                      : 10.0, // Wider width for selected
                   decoration: BoxDecoration(
                     color: currentPage == index
                         ? const Color.fromRGBO(7, 52, 91, 1)
                         : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10.0), // Rounded edges
+                    borderRadius: BorderRadius.circular(10.r), // Rounded edges
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            SizedBox(height: 20.h),
 
             // Skip and Next buttons
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.r),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Skip button
 
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Get.offNamed('/login');
                     },
-                    child: const Text("Skip", style: TextStyle(fontSize: 16,color: Colors.grey)),
-
+                    child: Text("Skip",
+                        style: TextStyle(fontSize: 16.sp, color: Colors.grey)),
                   ),
 
                   // Next button
@@ -101,8 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeInOut,
                         );
-                      }
-                      else {
+                      } else {
                         Get.offNamed('/login'); // Navigate to Login Screen
                       }
                     },
@@ -111,12 +114,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 10,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30.w,
+                        vertical: 10.h,
                       ),
                     ),
-                    child: const Text("Next", style: TextStyle(fontSize: 16,color: Colors.white), ),
+                    child: Text(
+                      "Next",
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -126,5 +132,4 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
-
 }

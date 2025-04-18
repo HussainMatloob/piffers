@@ -4,6 +4,7 @@ import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/Auth/ResetPassword.dart';
 import 'package:piffers/Views/Controllers/authcontroller.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -13,7 +14,7 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final AuthController authController = Get.put(AuthController());
+  AuthController authController = Get.put(AuthController());
   final emailController = TextEditingController();
   bool isEmailSent = false; // Track if email is sent
 
@@ -24,27 +25,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 300, left: 20, right: 20),
+            padding: EdgeInsets.only(top: 300.h, left: 20.w, right: 20.w),
             child: Column(
               children: [
-                const Center(
+                Center(
                   child: Text(
                     'Mail Address Here',
                     style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 28.sp,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(height: 10),
-                const Text('Enter the email address associated \n with your account ',
+                SizedBox(height: 10.h),
+                Text(
+                  'Enter the email address associated \n with your account ',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 if (!isEmailSent) ...[
                   // Email Input View
                   TextFormField(
@@ -67,12 +69,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         borderSide: BorderSide(
                           color: Colors.red, // Set border color to red
                         ),
-
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                   SizedBox(
                     width: double.infinity,
                     child: Center(
@@ -84,14 +85,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       const Color.fromRGBO(126, 35, 35, 1),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 120, vertical: 10),
-                                 shape: const RoundedRectangleBorder(),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 90.w, vertical: 10.h),
+                                  shape: const RoundedRectangleBorder(),
                                 ),
-                                child: const Text(
-                                   'Recover Password',
+                                child: Text(
+                                  'Recover Password',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                                      color: Colors.white, fontSize: 18.sp),
                                 ),
                               );
                       }),
@@ -99,60 +100,61 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 ] else ...<Widget>[
                   // OTP Input View
-                  const Center(
+                  Center(
                     child: Text(
                       'Enter the OTP sent to your email',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   OtpTextField(
                     cursorColor: Colors.black, // Set cursor color to white
                     numberOfFields: 4,
                     fillColor: Colors.white, // Set background color to black
                     filled: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
                     borderColor: Colors.white, // Remove default border color
                     onSubmit: _onVerifyOtpPressed, // Verify OTP
                     showFieldAsBox: true,
-                    focusedBorderColor: Colors.white, // Change focus border color to white
+                    focusedBorderColor:
+                        Colors.white, // Change focus border color to white
                     textStyle: const TextStyle(
                       color: Colors.black,
-                      fontSize: 24,// White text color for focused OTP fields
+                      fontSize: 24, // White text color for focused OTP fields
                       fontWeight: FontWeight.bold,
                     ),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.black, // Change background color to black when focused
+                      fillColor: Colors
+                          .black, // Change background color to black when focused
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                         borderSide: const BorderSide(color: Colors.red),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // add rich text for resend OTP
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: 'Didn\'t receive the OTP? ',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                       ),
                       children: [
                         TextSpan(
                           text: 'Resend OTP',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-
                 ],
               ],
             ),
@@ -171,24 +173,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
           // create row for back icon and text
           Positioned(
-            top: 40,
-            left: 20,
+            top: 40.h,
+            left: 20.w,
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios,
-                    size: 24,
+                    size: 24.sp,
                   ),
                   color: Colors.white,
                   onPressed: () {
                     Get.back();
                   },
                 ),
-                const Text(
+                Text(
                   'Forgot Password',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
