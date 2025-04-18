@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:piffers/Views/Controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/Authcontroller.dart';
 import '../Utils/utils.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -79,7 +79,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                     const SizedBox(height: 10),
                     const Center(
-                      child:  Text(
+                      child: Text(
                         "Your new password must be difficult \n from previously used passwords",
                         style: TextStyle(color: Colors.white70, fontSize: 18),
                         textAlign: TextAlign.center,
@@ -105,22 +105,22 @@ class _ResetPasswordState extends State<ResetPassword> {
                       width: double.infinity,
                       child: Obx(() {
                         return authController.isLoading.value
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
                             : ElevatedButton(
-                          onPressed: _onForgotPasswordPressed,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF7E2121),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 80, vertical: 8),
-                            shape: const RoundedRectangleBorder(
-                            ),
-                          ),
-                          child: const Text(
-                            'Continue',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 24),
-                          ),
-                        );
+                                onPressed: _onForgotPasswordPressed,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF7E2121),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 80, vertical: 8),
+                                  shape: const RoundedRectangleBorder(),
+                                ),
+                                child: const Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
+                                ),
+                              );
                       }),
                     ),
                   ],
@@ -154,11 +154,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       if (newPassword == confirmPassword) {
         authController
             .resetPassword(
-          _confirmPasswordController.text.trim(),
-          _newPasswordController.text.trim(),
-          token.toString(),
-          email.toString(),
-        )
+              _confirmPasswordController.text.trim(),
+              _newPasswordController.text.trim(),
+              token.toString(),
+              email.toString(),
+            )
             .then((_) {})
             .catchError((error) {
           Get.snackbar(

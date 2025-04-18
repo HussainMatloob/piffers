@@ -9,7 +9,7 @@ import 'package:piffers/Views/Screens/SOSscreen.dart';
 import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/Auth/ForgotPassworsd.dart';
 import 'package:piffers/Views/Controllers/Uicontroller.dart';
-import 'package:piffers/Views/controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/Authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piffers/Views/controllers/pdfcontroller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,7 +30,6 @@ class LocateResponder extends StatefulWidget {
 }
 
 class _LocateResponderState extends State<LocateResponder> {
-
   final PlaceController placeController = Get.put(PlaceController());
   // Track the selected index for bottom navigation
   final AuthController authController = Get.put(AuthController());
@@ -105,52 +104,75 @@ class _LocateResponderState extends State<LocateResponder> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16,),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       Row(
                         children: [
                           CircleAvatar(
                             maxRadius: 30,
                             child: ClipRect(
-
-                              child: Image.asset("assets/png/profile.png"),),
-
-                          )
-                          ,
-                          const SizedBox(width: 16,
+                              child: Image.asset("assets/png/profile.png"),
+                            ),
                           ),
-
-                            Column(
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${_fullName.toString()}", style: const TextStyle(fontSize: 18, color: Colors.black),),
-                              const Text("At Office", style: TextStyle(fontSize: 12, color: Colors.black),),
-                              const Text("Since 6:00 am", style: TextStyle(fontSize: 12, color: Colors.black),)
-
+                              Text(
+                                "${_fullName.toString()}",
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                              ),
+                              const Text(
+                                "At Office",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
+                              const Text(
+                                "Since 6:00 am",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              )
                             ],
                           )
                         ],
                       ),
-                      const SizedBox(height: 8,),
-                       GestureDetector(
-                         onTap: (){
-                           Get.to(Addresponder());
-                         },
-                         child: const Row(
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(Addresponder());
+                        },
+                        child: const Row(
                           children: [
                             CircleAvatar(
                               maxRadius: 30,
                               child: ClipRect(
-                                child: Icon(Icons.person_add_alt_1_sharp, size: 35,color: Colors.black,),
+                                child: Icon(
+                                  Icons.person_add_alt_1_sharp,
+                                  size: 35,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
+                            SizedBox(
+                              width: 16,
                             ),
-
-                            SizedBox(width: 16,),
-                            Text("Add A Responder", style: TextStyle(fontSize: 18, color: Colors.black),)
+                            Text(
+                              "Add A Responder",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            )
                           ],
-                                               ),
-                       ),
-
-                      const SizedBox(height: 16,),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
                       const Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -162,10 +184,11 @@ class _LocateResponderState extends State<LocateResponder> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8,),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       GestureDetector(
-                        onTap: (){
-
+                        onTap: () {
                           Get.to(PetTrackingScreen());
                         },
                         child: const Row(
@@ -173,19 +196,27 @@ class _LocateResponderState extends State<LocateResponder> {
                             CircleAvatar(
                               maxRadius: 30,
                               child: ClipRect(
-                                child: Icon(Icons.key_sharp, size: 35,color: Colors.black,),
-
+                                child: Icon(
+                                  Icons.key_sharp,
+                                  size: 35,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-
-                            const SizedBox(width: 16,
+                            const SizedBox(
+                              width: 16,
                             ),
-                            Text("Track your Pets", style: TextStyle(fontSize: 18, color: Colors.black),)
+                            Text(
+                              "Track your Pets",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            )
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16,),
-
+                      const SizedBox(
+                        height: 16,
+                      ),
                       const Align(
                         alignment: Alignment.topLeft,
                         child: Text(
@@ -197,31 +228,36 @@ class _LocateResponderState extends State<LocateResponder> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8,),
-
-                       GestureDetector(
-                         onTap: (){
-                           Get.to(AddNewPlaceScreen());
-                         },
-                         child: const Row(
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(AddNewPlaceScreen());
+                        },
+                        child: const Row(
                           children: [
                             CircleAvatar(
                               maxRadius: 30,
                               child: ClipRect(
-
-                                child: Icon(Icons.account_balance_rounded, size: 35,color: Colors.black,),
-
+                                child: Icon(
+                                  Icons.account_balance_rounded,
+                                  size: 35,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-
-                            SizedBox(width: 8,
+                            SizedBox(
+                              width: 8,
                             ),
-                            Text("Manage Places", style: TextStyle(fontSize: 18, color: Colors.black),)
+                            Text(
+                              "Manage Places",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            )
                           ],
-                                               ),
-                       ),
-
-
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -235,7 +271,8 @@ class _LocateResponderState extends State<LocateResponder> {
 
   Future<String?> fetchName() async {
     // Try to get the full name saved in shared preferences
-    String? fullName = await Utils.getString("name"); // 'name' is the key for the full name
+    String? fullName =
+        await Utils.getString("name"); // 'name' is the key for the full name
 
     if (fullName != null && fullName.isNotEmpty) {
       // If full name is found, return it
@@ -259,22 +296,24 @@ class _LocateResponderState extends State<LocateResponder> {
               fontWeight: FontWeight.bold,
             ),
           )),
-          actions:[
+          actions: [
             Obx(() => badges.Badge(
-              badgeContent: Text(
-                controller.notificationCount.value.toString(),
-                style: const TextStyle(color: Colors.white),
-              ),
-              showBadge: controller.notificationList.length > 0,
-              child: IconButton(
-                icon: const Icon(Icons.notifications,size: 30,),
-                onPressed: () {
-                  // Navigate to Notification Screen
-                 Get.to(NotificationListScreen());
-
-                },
-              ),
-            )),
+                  badgeContent: Text(
+                    controller.notificationCount.value.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  showBadge: controller.notificationList.length > 0,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      // Navigate to Notification Screen
+                      Get.to(NotificationListScreen());
+                    },
+                  ),
+                )),
           ],
         ),
         drawer: Drawer(
@@ -344,7 +383,6 @@ class _LocateResponderState extends State<LocateResponder> {
                 onTap: () {
                   // Handle Settings tap
                   Get.to(ForgotPassword());
-
                 },
               ),
               ListTile(
@@ -489,7 +527,6 @@ class _LocateResponderState extends State<LocateResponder> {
           ),
         ),
         body: Stack(
-
           children: [
             // Full-screen background image using AssetImage
             Positioned(
@@ -550,8 +587,16 @@ class _LocateResponderState extends State<LocateResponder> {
                                           fontWeight: FontWeight.w300,
                                           color: Colors.black,
                                         )),
-                                    const Text("At Office", style: TextStyle(fontSize: 12, color: Colors.black),),
-                                    const Text("Since 6:00 am", style: TextStyle(fontSize: 12, color: Colors.black),)
+                                    const Text(
+                                      "At Office",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.black),
+                                    ),
+                                    const Text(
+                                      "Since 6:00 am",
+                                      style: TextStyle(
+                                          fontSize: 12, color: Colors.black),
+                                    )
                                   ],
                                 ),
                               ),
@@ -576,32 +621,33 @@ class _LocateResponderState extends State<LocateResponder> {
                               spacing: 3,
                               children: [
                                 Container(
-                                width: 70,
-                                height: 4,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[700],
-                                  borderRadius: BorderRadius.circular(25),
+                                  width: 70,
+                                  height: 4,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[700],
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
                                 ),
-                              ),   Container(
-                                width: 50,
-                                height: 4,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[700],
-                                  borderRadius: BorderRadius.circular(25),
+                                Container(
+                                  width: 50,
+                                  height: 4,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[700],
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
                                 ),
-                              ), Container(
-                                width: 30,
-                                height: 3,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[700],
-                                  borderRadius: BorderRadius.circular(25),
+                                Container(
+                                  width: 30,
+                                  height: 3,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[700],
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
                                 ),
-                              ),
-
-                            ],
+                              ],
                             ),
                           ),
                         ),
@@ -609,7 +655,7 @@ class _LocateResponderState extends State<LocateResponder> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 5,left: 3,right: 3),
+                    padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
                     child: Container(
                         height: 80,
                         width: MediaQuery.of(context).size.width,
@@ -660,7 +706,8 @@ class _LocateResponderState extends State<LocateResponder> {
                                     showModalBottomSheet(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        final List<Map<String, String>> pdfFiles = [
+                                        final List<Map<String, String>>
+                                            pdfFiles = [
                                           {
                                             'name': 'TrainingHandBook',
                                             'path':
@@ -668,18 +715,22 @@ class _LocateResponderState extends State<LocateResponder> {
                                           },
                                           {
                                             'name': 'EscortServices',
-                                            'path': 'assets/pdf/EscortServices.pdf',
+                                            'path':
+                                                'assets/pdf/EscortServices.pdf',
                                           },
                                           {
                                             'name': 'MPRRScoreCard',
-                                            'path': 'assets/pdf/MPRRScoreCard.pdf',
+                                            'path':
+                                                'assets/pdf/MPRRScoreCard.pdf',
                                           },
                                           {
                                             'name': 'QRFBrochure',
-                                            'path': 'assets/pdf/QRFBrochure.pdf',
+                                            'path':
+                                                'assets/pdf/QRFBrochure.pdf',
                                           },
                                           {
-                                            'name': 'PIFFERSHiring&ScreeningFile',
+                                            'name':
+                                                'PIFFERSHiring&ScreeningFile',
                                             'path':
                                                 'assets/pdf/PIFFERSHiring&ScreeningFile.pdf',
                                           },
@@ -689,17 +740,20 @@ class _LocateResponderState extends State<LocateResponder> {
                                                 'assets/pdf/PIFFERSSecurityServices.pdf',
                                           },
                                           {
-                                            'name': 'PIFFERSSecurityUniformGallery',
+                                            'name':
+                                                'PIFFERSSecurityUniformGallery',
                                             'path':
                                                 'assets/pdf/PIFFERSSecurityUniformGallery.pdf',
                                           },
                                           {
-                                            'name': 'PIFFERSSecurityWeaponGallery',
+                                            'name':
+                                                'PIFFERSSecurityWeaponGallery',
                                             'path':
                                                 'assets/pdf/PIFFERSSecurityWeaponGallery.pdf',
                                           },
                                           {
-                                            'name': 'PsychotherapyProgressReport',
+                                            'name':
+                                                'PsychotherapyProgressReport',
                                             'path':
                                                 'assets/pdf/PsychotherapyProgressReport.pdf',
                                           },
@@ -711,12 +765,15 @@ class _LocateResponderState extends State<LocateResponder> {
                                             final pdf = pdfFiles[index];
 
                                             return Obx(() {
-                                              final selectedPdfPath = pdfController
-                                                  .selectedPdfPath.value;
+                                              final selectedPdfPath =
+                                                  pdfController
+                                                      .selectedPdfPath.value;
 
                                               return Container(
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 15),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 15),
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
@@ -724,7 +781,8 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   elevation: 5,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                   child: ListTile(
                                                     leading: const Icon(
@@ -734,17 +792,19 @@ class _LocateResponderState extends State<LocateResponder> {
                                                     trailing: IconButton(
                                                       icon: Icon(
                                                         Icons.visibility,
-                                                        color: selectedPdfPath ==
-                                                                pdf['path']
-                                                            ? Colors.blue
-                                                            : Colors.grey,
+                                                        color:
+                                                            selectedPdfPath ==
+                                                                    pdf['path']
+                                                                ? Colors.blue
+                                                                : Colors.grey,
                                                       ),
                                                       onPressed: () {
                                                         pdfController
                                                             .togglePdfSelection(
                                                                 pdf['path']!);
                                                         Get.to(PdfViewerScreen(
-                                                            pdfPath: pdf['path']!));
+                                                            pdfPath:
+                                                                pdf['path']!));
                                                       },
                                                     ),
                                                   ),
@@ -765,19 +825,21 @@ class _LocateResponderState extends State<LocateResponder> {
                                     'assets/png/logo2.png',
                                     height: double.infinity,
                                   ),
-
                                   onPressed: () {
                                     showModalBottomSheet(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        final List<Map<String, String>> pdfFiles = [
+                                        final List<Map<String, String>>
+                                            pdfFiles = [
                                           {
                                             'name': 'PIFFERSSedulous',
-                                            'path': 'assets/pdf/PIFFERSSedulous.pdf'
+                                            'path':
+                                                'assets/pdf/PIFFERSSedulous.pdf'
                                           },
                                           {
                                             'name': 'SedulousProfile',
-                                            'path': 'assets/pdf/SedulousProfile.pdf'
+                                            'path':
+                                                'assets/pdf/SedulousProfile.pdf'
                                           },
                                           {
                                             'name': 'TrainingHandBook',
@@ -789,15 +851,17 @@ class _LocateResponderState extends State<LocateResponder> {
                                         return ListView.builder(
                                           itemCount: pdfFiles.length,
                                           itemBuilder: (context, index) {
-
                                             final pdf = pdfFiles[index];
                                             return Obx(() {
-                                              final selectedPdfPath = pdfController
-                                                  .selectedPdfPath.value;
+                                              final selectedPdfPath =
+                                                  pdfController
+                                                      .selectedPdfPath.value;
 
                                               return Container(
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 15),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 15),
                                                 width: MediaQuery.of(context)
                                                     .size
                                                     .width,
@@ -805,7 +869,8 @@ class _LocateResponderState extends State<LocateResponder> {
                                                   elevation: 5,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                   ),
                                                   child: ListTile(
                                                     leading: const Icon(
@@ -815,17 +880,19 @@ class _LocateResponderState extends State<LocateResponder> {
                                                     trailing: IconButton(
                                                       icon: Icon(
                                                         Icons.visibility,
-                                                        color: selectedPdfPath ==
-                                                                pdf['path']
-                                                            ? Colors.blue
-                                                            : Colors.grey,
+                                                        color:
+                                                            selectedPdfPath ==
+                                                                    pdf['path']
+                                                                ? Colors.blue
+                                                                : Colors.grey,
                                                       ),
                                                       onPressed: () {
                                                         pdfController
                                                             .togglePdfSelection(
                                                                 pdf['path']!);
                                                         Get.to(PdfViewerScreen(
-                                                            pdfPath: pdf['path']!));
+                                                            pdfPath:
+                                                                pdf['path']!));
                                                       },
                                                     ),
                                                   ),
@@ -957,7 +1024,6 @@ class _LocateResponderState extends State<LocateResponder> {
 
         Utils.saveString("latitue", lat);
         Utils.saveString("longitude", lng);
-
 
         final Uri googleMapsUrl = Uri.parse(
           "https://www.google.com/maps/search/?api=1&query=$lat,$lng",

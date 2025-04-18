@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:piffers/Views/Auth/ForgotPassworsd.dart';
 import 'package:piffers/Views/Auth/SignUp.dart';
-import 'package:piffers/Views/Controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/Authcontroller.dart';
 import '../Utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,6 +16,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
   final AuthController authController = Get.put(AuthController());
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

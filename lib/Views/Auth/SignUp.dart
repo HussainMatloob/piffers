@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/Auth/Login.dart';
 import 'package:get/get.dart';
-import 'package:piffers/Views/controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/Authcontroller.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'VarifyOTPScreen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -15,14 +15,14 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-
   final AuthController authController = Get.put(AuthController());
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,55 +48,46 @@ class _SignupState extends State<Signup> {
               ),
             ),
             // Sign Up Text positioned
-            Positioned(
-              top: 120,
-              right: 20,
-              child: Text(
-                "Sign Up",
-                style: GoogleFonts.nunitoSans(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w700,
-                  height: 47.74 / 35,
-                  // Line-height equivalent (lineHeight / fontSize)
-                  color: Colors.white, // Set text color to white
-                ),
-              ),
-            ),
+
             // Foreground content wrapped in SingleChildScrollView to allow scrolling
             Padding(
-              padding: const EdgeInsets.all(50),
+              padding: EdgeInsets.all(30.h),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 180),
-
+                    SizedBox(height: 65.h),
+                    Text(
+                      "Sign Up",
+                      style: GoogleFonts.nunitoSans(
+                        fontSize: 45.sp,
+                        fontWeight: FontWeight.w700,
+                        height: 1.3.h,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 70.h),
                     Utils().buildTextField('First Name', _firstNameController),
-
                     Utils().buildTextField('Last Name', _lastNameController),
-
                     Utils().buildTextField(
                         'Email', _emailController, TextInputType.emailAddress),
-
                     Utils().buildTextField(
                         'Phone Number', _phoneController, TextInputType.number),
-
                     Utils().buildTextField(
                       'Password',
                       _passwordController,
                     ),
-
                     Utils().buildTextField(
                       'Confirm Password',
                       _confirmPasswordController,
                     ),
-                    SizedBox(height: 20),
-
+                    SizedBox(height: 20.h),
                     SizedBox(
                       width: double.infinity,
                       child: Center(
                         child: Obx(() {
-                          print("Checking isLoading: ${authController.isLoading.value}");
+                          print(
+                              "Checking isLoading: ${authController.isLoading.value}");
 
                           if (authController.isLoading.value) {
                             return const CircularProgressIndicator();
@@ -105,14 +96,20 @@ class _SignupState extends State<Signup> {
                           return ElevatedButton(
                             onPressed: () async {
                               // Trim all input fields to avoid spaces issues
-                              String firstName = _firstNameController.text.trim();
+                              String firstName =
+                                  _firstNameController.text.trim();
                               String lastName = _lastNameController.text.trim();
                               String email = _emailController.text.trim();
                               String password = _passwordController.text.trim();
-                              String confirmPassword = _confirmPasswordController.text.trim();
+                              String confirmPassword =
+                                  _confirmPasswordController.text.trim();
 
                               // Validate required fields
-                              if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+                              if (firstName.isEmpty ||
+                                  lastName.isEmpty ||
+                                  email.isEmpty ||
+                                  password.isEmpty ||
+                                  confirmPassword.isEmpty) {
                                 Get.snackbar(
                                   'Error',
                                   'All fields are required.',
@@ -135,7 +132,8 @@ class _SignupState extends State<Signup> {
                                 return;
                               }
 
-                              print("Form validated successfully. Registering user...");
+                              print(
+                                  "Form validated successfully. Registering user...");
 
                               // Call the register function
                               await authController.register(
@@ -149,8 +147,10 @@ class _SignupState extends State<Signup> {
                               Utils.saveString("email", email);
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(124, 2, 16, 1.0),
-                              padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                              backgroundColor:
+                                  const Color.fromRGBO(124, 2, 16, 1.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 100.w, vertical: 15.h),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -158,7 +158,7 @@ class _SignupState extends State<Signup> {
                             child: Text(
                               'Sign Up',
                               style: GoogleFonts.nunitoSans(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
@@ -167,17 +167,14 @@ class _SignupState extends State<Signup> {
                         }),
                       ),
                     ),
-
-
-                    SizedBox(height: 30),
-
+                    SizedBox(height: 30.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "Already have an account? ",
                           style: GoogleFonts.nunitoSans(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.w400,
                               color: Colors.grey),
                         ),
@@ -188,7 +185,7 @@ class _SignupState extends State<Signup> {
                           child: Text(
                             "Sign In",
                             style: GoogleFonts.nunitoSans(
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white),
                           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:piffers/Views/Utils/utils.dart';
 import 'package:piffers/Views/Auth/ResetPassword.dart';
-import 'package:piffers/Views/Controllers/authcontroller.dart';
+import 'package:piffers/Views/Controllers/Authcontroller.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -207,11 +207,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     if (emailController.text.isEmpty ||
         !emailController.text.contains('@') ||
         !emailController.text.contains('.')) {
-      Get.snackbar(
-        'Error',
-        'Please enter a valid email address',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar('Error', 'Please enter a valid email address',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red);
       return;
     }
 

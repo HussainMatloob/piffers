@@ -5,6 +5,7 @@ import '../Controllers/authcontroller.dart';
 import '../Controllers/otp_controller.dart';
 import '../Controllers/resent_top_controller.dart';
 import '../Utils/utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VerifyOtp extends StatefulWidget {
   const VerifyOtp({super.key});
@@ -34,7 +35,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
       return;
     }
 
-  await otpController.verifyOtp(otp);
+    await otpController.verifyOtp(otp);
 
     // print("Entered OTP: $otp");
   }
@@ -54,7 +55,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 0.w),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,57 +64,58 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     Text(
                       "Verify OTP",
                       style: GoogleFonts.nunitoSans(
-                        fontSize: 28,
+                        fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 10),
-
+                    SizedBox(height: 10.h),
                     Text(
                       "Enter the 6-digit code sent to your Email",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.nunitoSans(
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         color: Colors.white70,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30.h),
 
                     // OTP Input Boxes
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         6,
-                        (index) => Container(
-                          width: 50,
-                          height: 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextField(
-                            controller: _otpControllers[index],
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            maxLength: 1,
-                            style: const TextStyle(fontSize: 22),
-                            decoration: const InputDecoration(
-                              counterText: "",
-                              border: InputBorder.none,
+                        (index) => FittedBox(
+                          child: Container(
+                            width: 50.w,
+                            height: 50.h,
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            onChanged: (value) {
-                              if (value.isNotEmpty && index < 5) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
+                            child: TextField(
+                              controller: _otpControllers[index],
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              style: const TextStyle(fontSize: 22),
+                              decoration: const InputDecoration(
+                                counterText: "",
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty && index < 5) {
+                                  FocusScope.of(context).nextFocus();
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30.h),
 
                     // Verify OTP Button
                     Obx(
@@ -125,16 +127,16 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       const Color.fromRGBO(124, 2, 16, 1.0),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 100, vertical: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 100.h, vertical: 15.w),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
+                                    borderRadius: BorderRadius.circular(30.r),
                                   ),
                                 ),
                                 child: Text(
                                   'Verify OTP',
                                   style: GoogleFonts.nunitoSans(
-                                    fontSize: 18,
+                                    fontSize: 18.sp,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -142,9 +144,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                               );
                       },
                     ),
-
-                    const SizedBox(height: 20),
-
+                    SizedBox(height: 20.h),
                     // Resend OTP
                     Obx(
                       () {
@@ -170,7 +170,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
                               await resendOtpController.resendOtp(email);
 
                               // Show response message after API call
-                              if (resendOtpController.status.value == "success") {
+                              if (resendOtpController.status.value ==
+                                  "success") {
                                 Get.snackbar(
                                   "Success",
                                   resendOtpController.message.value,
@@ -188,11 +189,11 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 );
                               }
                             },
-                            child: const Text(
+                            child: Text(
                               "Resend OTP?",
                               style: TextStyle(
                                 color: Colors.blueAccent,
-                                fontSize: 16,
+                                fontSize: 16.sp,
                               ),
                             ),
                           );
