@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920485328992",
+    "project_id": "piffers-app-sos",
+    "storage_bucket": "piffers-app-sos.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920485328992:android:a7ce17fa43ff131a17ab05",
+        "android_client_info": {
+          "package_name": "com.example.piffers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTRYzzYodzRvLnDQVNLeTfudukPyn_isE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

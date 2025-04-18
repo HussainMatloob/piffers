@@ -12,7 +12,8 @@ class ApiService {
   final AuthController authController = AuthController();
   // Register API
 
-  static Future<Map<String, dynamic>> registerUser(Map<String, dynamic> data) async {
+  static Future<Map<String, dynamic>> registerUser(
+      Map<String, dynamic> data) async {
     try {
       final response = await http.post(
         Uri.parse("https://sos.piffers.net/api/register"),
@@ -29,7 +30,6 @@ class ApiService {
       }
 
       if (response.statusCode != 200) {
-
         // print(response.statusCode);
         // print("Api Response  Error:  ${response.body}");
         throw Exception("Error: ${response.statusCode} - ${response.body}");
@@ -40,7 +40,6 @@ class ApiService {
       if (jsonResponse is! Map<String, dynamic>) {
         throw Exception("Invalid response format. Expected JSON object.");
       }
-
       return jsonResponse;
     } catch (e) {
       print("API Error: $e");
@@ -48,10 +47,8 @@ class ApiService {
     }
   }
 
-
   // Login API
-  static Future<Map> loginUser(
-      Map<String, dynamic> data) async {
+  static Future<Map> loginUser(Map<String, dynamic> data) async {
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
       headers: {
@@ -69,7 +66,7 @@ class ApiService {
       Uri.parse('$baseUrl/logout'),
       headers: {
         'Content-Type': 'application/json',
-        'Accept':'application.json',
+        'Accept': 'application.json',
         'Authorization': 'Bearer $token',
       },
     );
@@ -77,6 +74,7 @@ class ApiService {
       throw Exception("Failed to log out");
     }
   }
+
 // Send OTP API
   static Future<void> sendOtp(String email) async {
     final response = await http.post(
@@ -84,7 +82,6 @@ class ApiService {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-
       },
       body: jsonEncode({'email': email}),
     );
@@ -96,18 +93,16 @@ class ApiService {
 
   // Reset Password API
   static Future<void> resetPassword(
-      String email,
-      String otp,
-      String password,
-      String confirmPassword,
-      ) async {
+    String email,
+    String otp,
+    String password,
+    String confirmPassword,
+  ) async {
     final response = await http.post(
       Uri.parse('$baseUrl/reset-password'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-
-
       },
       body: jsonEncode({
         'email': email,
@@ -121,14 +116,15 @@ class ApiService {
       throw Exception("Failed to reset password. Please try again.");
     }
   }
+
   // Forgot Password API
   static Future<void> sendResetPasswordEmail(String email) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/password-reset-otp'),
-        headers: {        'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/json',
-
         },
         body: jsonEncode({'email': email}),
       );
@@ -142,12 +138,11 @@ class ApiService {
     }
   }
 
-
   Future<Map<String, dynamic>> requestHelp({
     required String message,
     required double latitude,
     required double longitude,
-    required String  location,
+    required String location,
   }) async {
     String? token = await Utils.getString('token');
 
@@ -185,7 +180,8 @@ class ApiService {
         print('Parsed response: $parsedResponse');
         return parsedResponse; // Should return {"message": "..."}
       } else {
-        throw Exception('Failed to send help request. Status: ${response.statusCode}');
+        throw Exception(
+            'Failed to send help request. Status: ${response.statusCode}');
       }
     } catch (e) {
       print('Exception occurred: $e');
@@ -264,7 +260,7 @@ class ApiService {
     if (response.statusCode == 200) {
       // Decode the response body to a list of responders
       final List<dynamic> data = json.decode(response.body);
-      return data;  // Return the list
+      return data; // Return the list
     } else {
       throw Exception('Failed to load responders');
     }
@@ -306,10 +302,7 @@ class ApiService {
           "status": responseData["status"] ?? "error",
         };
       } else {
-        return {
-          "message": "OTP verification failed",
-          "status": "error"
-        };
+        return {"message": "OTP verification failed", "status": "error"};
       }
     } catch (e) {
       print("Error in verifyOtp: $e");
@@ -326,7 +319,6 @@ class ApiService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-
         },
         body: jsonEncode({
           "email": email,
@@ -339,7 +331,6 @@ class ApiService {
       return {"message": "Something went wrong", "status": "error"};
     }
   }
-
 
   // Private helper to process responses
   static Map _processResponse(http.Response response) {
@@ -356,5 +347,4 @@ class ApiService {
       throw Exception("Error: ${response.body}");
     }
   }
-
 }

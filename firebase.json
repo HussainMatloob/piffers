@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"piffers-app-sos","appId":"1:920485328992:android:a7ce17fa43ff131a17ab05","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"piffers-app-sos","configurations":{"android":"1:920485328992:android:a7ce17fa43ff131a17ab05","ios":"1:920485328992:ios:7fc5636327d6e24217ab05"}}}}}}
